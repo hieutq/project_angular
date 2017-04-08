@@ -42,11 +42,10 @@
         <link href="{{url('css/custom.min.css')}}" rel="stylesheet" type="text/css" />
         <link href="{{url('css/customer.css')}}" rel="stylesheet" type="text/css" />
         <link href="{{url('css/user.css')}}" rel="stylesheet" type="text/css" />        
-        {{-- <link href="{{url('css/summernote.css')}}" rel="stylesheet"> --}}
         
 
         <!-- END THEME LAYOUT STYLES -->
-        <link rel="shortcut icon" href="{{url('img/favicon.ico')}}" />
+        <link rel="shortcut icon" href="" />
         <meta content="{{URL::asset('')}}" name="website" />
         <!-- Multi Select -->
         <link rel="stylesheet" type="text/css" href="{{url('css/multi-select/bootstrap-select.css')}}">
@@ -64,7 +63,7 @@
                 <!-- BEGIN LOGO -->
                 <div class="page-logo">
                     <a href="{{URL::asset('')}}">
-                        <img src="{{url('img/logo.png')}}" alt="logo" class="logo-default" /> </a>
+                        <img src="" alt="logo" class="logo-default" /> </a>
                     <div class="menu-toggler sidebar-toggler"> </div>
                 </div>
                 <!-- END LOGO -->
@@ -129,7 +128,7 @@
                                         <li>
                                             <a href="#">
                                                 <span class="photo">
-                                                    <img src="../assets/layouts/layout3/img/avatar2.jpg" class="img-circle" alt=""> </span>
+                                                    <img src="" class="img-circle" alt=""> </span>
                                                 <span class="subject">
                                                     <span class="from"> Lisa Wong </span>
                                                     <span class="time">Just Now </span>
@@ -192,7 +191,7 @@
                         <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
                         <li class="dropdown dropdown-user">
                             <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-                                <img alt="" class="img-circle" src="@if(Auth::user()->avatar == Null) {{url('img/default_avatar.jpg')}}@endif @if(Auth::user()->avatar != Null) {{url('img/default_avatar.jpg')}}@endif" />
+                            {{--<img alt="" class="img-circle" src="@if(Auth::user()->avatar == Null) {{url('img/default_avatar.jpg')}}@endif @if(Auth::user()->avatar != Null) {{url('img/default_avatar.jpg')}}@endif" />--}}
                           
                                 <span class="username username-hide-on-mobile" id="id_login" data-id="{{ Auth::user()->id }}">   {{ Auth::user()->name }} </span>
                                 <i class="fa fa-angle-down"></i>
@@ -309,7 +308,7 @@
                                 </a>
                             </li>
 
-                            <li class="nav-item {{ Request::is('user*') ? 'active open' : '' }}  ">
+                            {{--<li class="nav-item {{ Request::is('user*') ? 'active open' : '' }}  ">
                                 <a href="" class="nav-link nav-toggle">
                                     <i class="fa fa-users"></i>
                                     <span class="title">Quản Lý Tài Khoản</span>
@@ -321,7 +320,7 @@
                                     <i class="fa fa-user-secret" aria-hidden="true"></i>
                                     <span class="title">Vai trò</span>
                                 </a>
-                            </li>
+                            </li>--}}
                             {{-- <li class="nav-item ">
                                 <a href="{{ url('news/post') }}" class="nav-link nav-toggle">
                                     <i class="fa fa-rss-square" aria-hidden="true"></i>
@@ -335,23 +334,15 @@
                             <li class="nav-item {{ Request::is('courses*') ? 'active open' : '' }}  ">
                                 <a href="" class="nav-link nav-toggle">
                                     <i class="fa fa-book"></i>
-                                    <span class="title">Quản Lý Khóa Học</span>
+                                    <span class="title">Quản Lý Tài Khoản</span>
                                 </a>
                             </li> 
 
                           <li class="nav-item {{ Request::is('classroom*') ? 'active open' : '' }}  ">
                                 <a href="" class="nav-link nav-toggle">
                                     <i class="fa fa-building"></i>
-                                    <span class="title">Quản Lý Lớp Học</span>
+                                    <span class="title">Quản Thành Viên</span>
                                 </a>
-                            </li>
-
-                            <li class="nav-item {{ Request::is('student-cares') ? 'active open' : '' }}  ">
-                                <a href="" class="nav-link nav-toggle">
-                                    <i class="fa fa-user"></i>
-                                    <span class="title">Chăm Sóc Học Viên</span>
-                                </a>
-                            </li>
                             </li>
                              
                         </ul>
@@ -1121,7 +1112,6 @@
 
         <script src="{{url('js/demo.min.js')}}" type="text/javascript"></script>
         <script src="{{url('js/quick-sidebar.min.js')}}" type="text/javascript"></script>
-        <script src="{{url('summernote/summernote.min.js')}}" type="text/javascript"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
         <!-- multi select js -->
         <script src="{{url('js/multi-select/bootstrap-select.js')}}" type="text/javascript"></script>
