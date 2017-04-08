@@ -18,3 +18,4 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index');
+Route::get('/list', ['as'=>'get.list', 'uses' => 'CustomersController@getList']);
