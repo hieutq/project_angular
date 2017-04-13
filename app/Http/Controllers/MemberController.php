@@ -15,38 +15,13 @@ class MemberController extends Controller
     }
 
     public function getAdd (Request $request) {
-        $data = $request->all();
-        $rules = [
-            'name'      =>'required|max:100',
-            'gender'    =>'required|numeric',
-            'age'       =>'required|numeric|digits:2',
-            'photo'     =>'required|image|mimes:jpeg,png,gif|max:10240',
-
-        ];
-
-        $messages = [
-            'name.required'         => 'Tell us your name.',
-            'name.max'              => 'your name wrong. max 100 string',
-            'gender.required'       => 'Tell us your gender.',
-            'gender.numeric'        => 'Your gender Your age must be a numberic',
-            'age.required'          => 'Tell us your age',
-            'age.numberic'          => 'Your age Your age must be a numberic',
-            'age.digits'            => 'Your age must be a a 2 digit number',
-            'photo.required'        => 'Selected a image',
-            'photo.image'           => 'The photo must be an image.',
-            'photo.mimes'           => 'The photo must be a file of type: jpeg, png, gif.',
-            'photo.max'             => 'The photo may not be greater than 10 MB.'                  
-        ];
-
-
-        $validator = Validator::make($data, $rules, $messages);
-        if ($validator->fails()) {
-            return response()->json([
-                    'error' => true,
-                    'message' => $validator->errors(),
-                ], 200);
-        }
-
+        $data = Member::Validate_rule ($request->all(), Member::$rules, Member::$messages);
+                if ($data['error']) {
+                    return response()->json([
+                        'error'      => true,
+                        'messages'   =>$data['messages']
+                    ],200);
+                }
         DB::beginTransaction();
         try {
             $imageName = time().'.'.$request->photo->getClientOriginalExtension();

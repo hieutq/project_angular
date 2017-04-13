@@ -100,11 +100,12 @@
 		            <form role="form" name="formAdd" id="formMemberAdd" novalidate enctype="multipart/form-data">
 		               <div class="form-group">
 							<label for="usrname"></span> Name</label>
-							<input type="text" class="form-control " name="name" ng-model="Member.name" ng-required="true"  id="usrname" placeholder="Enter Your Name" ng-required="true">
+							<input type="text" class="form-control " ng-pattern="NameCharacter" name="name" ng-model="Member.name" ng-required="true"  id="usrname" placeholder="Enter Your Name" ng-required="true">
 							<input type="hidden" name="_token" value="{{ csrf_token() }}">
 							<p class="font-red-mint error">@{{ messagesName }}</p>
 			                <div ng-show="formAdd.$submitted || formAdd.name.$touched">
 						    <span class="colorMessages" ng-show="formAdd.name.$error.required">Tell us your name.</span>
+						    <span class="colorMessages" ng-show="formAdd.name.$error.pattern">The name must be characters</span>
 						    </div>
 
 		               </div>
@@ -132,7 +133,8 @@
 		               </div>
 		               <div class="form-group">
 		                  <label for="psw"> Address</label>
-		                  <input type="text" class="form-control" name="address" ng-model="Member.address" id="address" placeholder="Enter Address">
+		                  
+		                  <textarea name="address" class="form-control" ng-model="Member.address" id="address"></textarea>
 		               </div>
 		               <div class="form-group">
 		                  	<label for="psw"> Avatar</label>
@@ -162,12 +164,13 @@
 		            <form role="form" name="formEdit" id="formMemberEdit" novalidate enctype="multipart/form-data">
 		               <div class="form-group">
 							<label for="usrname"></span> Name</label>
-							<input type="text" class="form-control " name="name" ng-model="MemberEdit.name" ng-required="true"  id="usrname" placeholder="Enter Your Name" ng-required="true">
+							<input type="text" class="form-control " name="name" ng-pattern="NameCharacter" ng-model="MemberEdit.name" ng-required="true"  id="usrname" placeholder="Enter Your Name" ng-required="true">
 							<input type="hidden" class="form-control " name="id" ng-model="MemberEdit.id" ng-required="true" value="@{{id}}" placeholder="Enter Your Name" ng-required="true">
 							<input type="hidden" name="_token" value="{{ csrf_token() }}">
 							<p class="font-red-mint error">@{{ messagesName }}</p>
 			                <div ng-show="formEdit.$submitted || formEdit.name.$touched">
 						    <span class="colorMessages" ng-show="formEdit.name.$error.required">Tell us your name.</span>
+						    <span class="colorMessages" ng-show="formEdit.name.$error.pattern">The name must be characters</span>
 						    </div>
 
 		               </div>
@@ -195,7 +198,8 @@
 		               </div>
 		               <div class="form-group">
 		                  <label for="psw"> Address</label>
-		                  <input type="text" class="form-control" name="address" ng-model="MemberEdit.address" id="address" placeholder="Enter Address">
+		                  
+		                  <textarea name="address" class="form-control" ng-model="MemberEdit.address" ></textarea>
 		               </div>
 		               <div class="form-group">
 		                  	<label for="psw"> Avatar</label>
@@ -216,11 +220,8 @@
 	<script src="{{url('js/app/lib/angular.min.js')}}" type="text/javascript"></script>
 	<script src="{{url('js/jqueryValidate/jquery.validate.min.js')}}" type="text/javascript"></script>
 	<script src="{{url('js/jqueryValidate/additional-methods.min.js')}}" type="text/javascript"></script>
-	{{-- <script src="{{url('js/Member.js')}}" type="text/javascript"></script> --}}
 	<script src="{{url('js/app/app.js')}}" type="text/javascript"></script>
 	<script src="{{url('js/app/directive.js')}}" type="text/javascript"></script>
-	
-	<script src="{{url('js/app/controller/CustomersController.js')}}" type="text/javascript"></script>
-	{{-- <script src="{{url('js/app/controller/MemberController.js')}}" type="text/javascript"></script> --}}
+	<script src="{{url('js/app/controller/MemberController.js')}}" type="text/javascript"></script>
 
 @endsection
