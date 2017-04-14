@@ -18,4 +18,9 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index');
-Route::get('/list', ['as'=>'get.list', 'uses' => 'CustomersController@getList']);
+Route::get('/list',['as'=>'get.list', 'uses'=> 'MemberController@getList']);
+Route::post('/add',['as'=>'post.add', 'uses'=> 'MemberController@getAdd']);
+Route::get('/edit/{id}',['as'=>'get.edit', 'uses'=> 'MemberController@getEdit']);
+Route::post('/edit/{id}',['as'=>'post.edit', 'uses'=> 'MemberController@postEdit']);
+Route::delete('/delete/{id}',['as'=>'post.delete', 'uses'=> 'MemberController@deleteMember']);
+Route::post('/upload',['as'=>'post.upload', 'uses'=> 'MemberController@uploadImage']);
