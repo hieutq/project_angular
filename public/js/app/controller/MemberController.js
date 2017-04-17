@@ -49,6 +49,7 @@ app.controller ('MemberController' ,function($scope, $http, API) {
 					url :'edit/'+ id,
 				}).then(function(response){
 					$scope.MemberEdit = response.data;
+					$scope.image = response.data.photo;
 				});
 				$scope.frmTitle = "Sửa Thành Viên";
 				break;
@@ -80,7 +81,7 @@ app.controller ('MemberController' ,function($scope, $http, API) {
 	                return fd;
 	            }
 	        }).then(function(response){
-	        	console.log(response);
+
 	            if (response.data.error) {
 	            	$('.error').show();
 	            	$scope.messagesError 	= response.data.messages.photo;
@@ -129,14 +130,12 @@ app.controller ('MemberController' ,function($scope, $http, API) {
 	            	$scope.messagesAge 		= response.data.message.age;
 	            }
 	            else{
-	            	console.log(response);
 	            	$scope.members = response.data;
 	            	$('#myModalEdit').modal('hide');
 	            	toastr["success"]("Sửa thành viên thành công!");
 	            	
 	            }
 	        },function(response) {
-				console.log(response);
 				toastr["error"]("Đã xảy ra lỗi vui lòng kiểm tra lại !");
 			});
 		}

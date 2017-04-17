@@ -3,51 +3,70 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Model\Member;
+use App\Models\Member;
 use App\Http\Requests\MemberRequest;
 use Validator;
 use DB;
 class MemberController extends Controller
 {
-   public function getList() {
+   public function getList() 
+   {
         $datas =  Member::orderby('id','DESC')->get();
         return response()->json($datas);
     }
 
-    public function getAdd (Request $request) {
+    public function getAdd (Request $request) 
+    {
         $data = Member::Validate_rule ($request->all(), Member::$rules, Member::$messages);
-                if ($data['error']) {
-                    return response()->json([
-                        'error'      => true,
-                        'messages'   =>$data['messages']
-                    ],200);
-                }
+
+        if ($data['error']) {
+
+            return response()->json([
+                'error'      => true,
+                'messages'   =>$data['messages']
+            ],200);
+
+        }
+
         DB::beginTransaction();
         try {
+
             $imageName = time().'.'.$request->photo->getClientOriginalExtension();
             $request->photo->move(public_path('images'), $imageName);
             $data = $request->all();
-            $data['photo'] = $imageName;
+            $data['name']       = strip_tags(trim($request->name)); 
+            $data['gender']     = strip_tags(trim($request->gender));
+            $data['age']        = strip_tags(trim($request->age));
+            $data['address']    = htmlentities(trim($request->address));
+            $data['photo']      = $imageName;
             $datas = Member::create($data);
             DB::commit();
             return $this->getList();
+
         } catch (Exception $e) {
+
             DB::rollback();
+
         }   
     }
 
-    public function getEdit ($id) {
+    public function getEdit ($id) 
+    {
+
         $id = $id;
         $data = Member::find($id);
         return response()->json($data);
+
     }
 
-    public function postEdit (Request $request ,$id) {
+    public function postEdit (Request $request ,$id) 
+    {
         $requestAll = $request->all();
         $rules = [
-            'name'      =>'required|max:100',
-            'gender'    =>'required|numeric',
-            'age'       =>'required|numeric|digits:2',
+            'name'      => 'required|max:100',
+            'gender'    => 'required|numeric',
+            'age'       => 'required|numeric|digits:2',
+            'address'   => 'required|max:300',
 
         ];
 
@@ -59,6 +78,8 @@ class MemberController extends Controller
             'age.required'          => 'Tell us your age',
             'age.numberic'          => 'Your age Your age must be a numberic',
             'age.digits'            => 'Your age must be a a 2 digit number',
+            'address.max'           => 'The address may not be greater than 300 characters.',  
+            'address.required'      => 'Tell us your address', 
 
         ];
 
@@ -73,26 +94,29 @@ class MemberController extends Controller
 
         DB::beginTransaction();
         try {
-            if (!$request->hasFile('photo')) {
-                $customer = Member::find($id);
-                $customer->name = $request->name;
-                $customer->gender = $request->gender;
-                $customer->age = $request->age;
-                $customer->address = $request->address;
+            if (!$request->hasFile('photo')) 
+            {
+                
+                $customer=Member::find($id);
+                $customer->name     = strip_tags(trim($request->name));
+                $customer->gender   = strip_tags(trim($request->gender));
+                $customer->age      = strip_tags(trim($request->age));
+                $customer->address  = htmlentities(trim($request->address));
                 $customer->save();
                 return $this->getList();
                 
             }
-            else {
+            else 
+            {
                     $imageName = rand(1111,1000).'.'.$request->photo->getClientOriginalExtension();
                     $request->photo->move(public_path('images'), $imageName);
                     $id = $id;
                     $customer = Member::find($id);
-                    $customer->name = $request->name;
-                    $customer->gender = $request->gender;
-                    $customer->age = $request->age;
-                    $customer->address = $request->address;
-                    $customer->photo = $imageName; 
+                    $customer->name     = $request->name;
+                    $customer->gender   = $request->gender;
+                    $customer->age      = $request->age;
+                    $customer->address  = $request->address;
+                    $customer->photo    = $imageName; 
                     $customer->save();
 
                     DB::commit();
@@ -100,37 +124,40 @@ class MemberController extends Controller
                 
                 
             }
-        } catch (Exception $e) {
+        } 
+        catch (Exception $e) {
             DB::rollback();
         }
     }
 
-    public function deleteMember ($id) {
+    public function deleteMember ($id) 
+    {
         $customer = Member::find($id);
         $customer->delete();
         return $this->getList();
     }
 
 
-    public function uploadImage (Request $request) {
+    public function uploadImage (Request $request) 
+    {
         dd($request->photo);
         if ($request->hasFile('photo')) {
-            $file = $request->file('photo');
-            $filename = $file->getClientOriginalName();
-            $image = $file->getClientOriginalExtension();
-            $imageName = rand(1111,10000).'-'.$filename;
-            $allowed = array('jpg','png','gif');
-            $path = public_path('images');
+            $file       = $request->file('photo');
+            $filename   = $file->getClientOriginalName();
+            $image      = $file->getClientOriginalExtension();
+            $imageName  = rand(1111,10000).'-'.$filename;
+            $allowed    = array('jpg','png','gif');
+            $path       = public_path('images');
             if (in_array($image, $allowed)) {
                 $file->move($path, $imageName);
                 return response()->json([
-                    'error' => true,
-                    'pathFile' => $imageName,
+                    'error'     => true,
+                    'pathFile'  => $imageName,
                 ]);
             }else {
                 return response()->json([
-                    'error' => false,
-                    'messages' => 'image format wrong!'
+                    'error'     => false,
+                    'messages'  => 'image format wrong!'
                 ]);
             }
         }
