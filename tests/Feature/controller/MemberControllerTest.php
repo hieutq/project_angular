@@ -6,28 +6,50 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\Model\Member;
+use App\Models\Member;
 
 class MemberControllerTest extends TestCase
 {
 	use DatabaseMigrations;
 	use WithoutMiddleware;
 
-	public function testGetListAllMember ()
+	/**
+     * A basic test example.
+     * @test
+     * @return void
+     */
+    // protected function assertFalseState($request_array) {
+    //     $response = $this->call('POST', '/add', $request_array);
+    //     $data = json_decode($response ->getContent(), true);
+    //     $this->assertEquals(405, $response->status());
+    //     if ($data['status']==false) {
+    //         $this->assertTrue(true);
+    //     } else {
+    //         $this->assertTrue(false);
+    //     }
+    // }
+
+	public function testgetList ()
 	{
-		$Members = factory(App\User::class,2)->create();
+		$Member = factory(Member::class)->create();
 
-		$this
-		->action('GET', 'MemberController@getList')
-		->seeStatusCode(200);
+		 $response = $this->get('/list');
 
-		foreach ($Members as $Member) {
-			$this->seeJson([
-				'name' =>$Member->name,
-				'age'  =>$Member->age,
-				'address' =>$Member->address,	
-			]);
-		}
+        $response->assertStatus(200);
+		
 	}
+
+	public function testgetEdit ()
+	{
+		$Member = factory(Member::class)->create();
+
+		$response = $this->get(route('get.edit',[$Member->id]));
+
+        $response->assertStatus(200);
+		
+	}
+	
+	
+	
 
 }

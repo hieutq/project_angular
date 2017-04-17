@@ -23,7 +23,7 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(App\Model\Member::class, function(Faker\Generator $faker) {
+$factory->define(App\Models\Member::class, function(Faker\Generator $faker) {
 	return [
 		'name' 		=> $faker->name,
 		'age'  		=> rand(1,99),

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -17,21 +17,24 @@ class Member extends Model
         'gender'    =>'required|numeric',
         'age'       =>'required|numeric|digits:2',
         'photo'     =>'required|image|mimes:jpeg,png,gif|max:10240',
+        'address'   =>'required|max:300',
 
     ];
 
     public static $messages = [
         'name.required'         => 'Tell us your name.',
-        'name.max'              => 'your name wrong. max 100 string',
+        'name.max'              => 'The name may not be greater than 100 characters.',
         'gender.required'       => 'Tell us your gender.',
-        'gender.numeric'        => 'Your gender Your age must be a numberic',
+        'gender.numeric'        => 'The gender must be a number.',
         'age.required'          => 'Tell us your age',
-        'age.numberic'          => 'Your age Your age must be a numberic',
-        'age.digits'            => 'Your age must be a a 2 digit number',
+        'age.numberic'          => 'The age must be a number.',
+        'age.digits'            => 'The age must be 2 digits.',
         'photo.required'        => 'Selected a image',
         'photo.image'           => 'The photo must be an image.',
         'photo.mimes'           => 'The photo must be a file of type: jpeg, png, gif.',
-        'photo.max'             => 'The photo may not be greater than 10 MB.'                  
+        'photo.max'             => 'The photo may not be greater than 10 MB.',
+        'address.max'           => 'The address may not be greater than 300 characters.',  
+        'address.required'      => 'Tell us your address'                 
     ];
 
     /**

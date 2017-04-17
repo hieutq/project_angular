@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Model\Member;
+use App\Models\Member;
 use App\Http\Requests\MemberRequest;
 use Validator;
 use DB;
@@ -34,7 +34,11 @@ class MemberController extends Controller
             $imageName = time().'.'.$request->photo->getClientOriginalExtension();
             $request->photo->move(public_path('images'), $imageName);
             $data = $request->all();
-            $data['photo'] = $imageName;
+            $data['name']       = strip_tags(trim($request->name)); 
+            $data['gender']     = strip_tags(trim($request->gender));
+            $data['age']        = strip_tags(trim($request->age));
+            $data['address']    = htmlentities(trim($request->address));
+            $data['photo']      = $imageName;
             $datas = Member::create($data);
             DB::commit();
             return $this->getList();
@@ -62,6 +66,7 @@ class MemberController extends Controller
             'name'      => 'required|max:100',
             'gender'    => 'required|numeric',
             'age'       => 'required|numeric|digits:2',
+            'address'   => 'required|max:300',
 
         ];
 
@@ -73,6 +78,8 @@ class MemberController extends Controller
             'age.required'          => 'Tell us your age',
             'age.numberic'          => 'Your age Your age must be a numberic',
             'age.digits'            => 'Your age must be a a 2 digit number',
+            'address.max'           => 'The address may not be greater than 300 characters.',  
+            'address.required'      => 'Tell us your address', 
 
         ];
 
@@ -91,10 +98,10 @@ class MemberController extends Controller
             {
                 
                 $customer=Member::find($id);
-                $customer->name      = $request->name;
-                $customer->gender   = $request->gender;
-                $customer->age      = $request->age;
-                $customer->address  = $request->address;
+                $customer->name     = strip_tags(trim($request->name));
+                $customer->gender   = strip_tags(trim($request->gender));
+                $customer->age      = strip_tags(trim($request->age));
+                $customer->address  = htmlentities(trim($request->address));
                 $customer->save();
                 return $this->getList();
                 

@@ -100,12 +100,13 @@
 		            <form role="form" name="formAdd" id="formMemberAdd" novalidate enctype="multipart/form-data">
 		               <div class="form-group">
 							<label for="usrname"></span> Name</label>
-							<input type="text" class="form-control " ng-pattern="NameCharacter" name="name" ng-model="Member.name" ng-required="true"  id="usrname" placeholder="Enter Your Name" ng-required="true">
+							<input type="text" class="form-control " ng-pattern="NameCharacter" name="name" ng-model="Member.name" ng-required="true"  id="usrname" placeholder="Enter Your Name" ng-required="true" ng-maxlength="100" >
 							<input type="hidden" name="_token" value="{{ csrf_token() }}">
 							<p class="font-red-mint error">@{{ messagesName }}</p>
 			                <div ng-show="formAdd.$submitted || formAdd.name.$touched">
 						    <span class="colorMessages" ng-show="formAdd.name.$error.required">Tell us your name.</span>
 						    <span class="colorMessages" ng-show="formAdd.name.$error.pattern">The name must be characters</span>
+						    <span class="colorMessages" ng-show="formAdd.name.$invalid">The name may not be greater than 100 characters.</span>
 						    </div>
 
 		               </div>
@@ -134,7 +135,12 @@
 		               <div class="form-group">
 		                  <label for="psw"> Address</label>
 		                  
-		                  <textarea name="address" class="form-control" ng-model="Member.address" id="address"></textarea>
+		                  <textarea name="address" class="form-control" ng-model="Member.address" ng-maxlength='300' id="address" ng-required='true'></textarea>
+		                  	<div ng-show="formAdd.$submitted || formAdd.address.$touched">
+						        <span class="colorMessages" ng-show="formAdd.address.$error.required">Tell us your address. </span>
+						        <span class="colorMessages" ng-show="formAdd.address.$invalid">The address may not be greater than 300 characters.</span>
+						    </div>
+		                  
 		               </div>
 		               <div class="form-group">
 		                  	<label for="psw"> Avatar</label>
@@ -164,13 +170,15 @@
 		            <form role="form" name="formEdit" id="formMemberEdit" novalidate enctype="multipart/form-data">
 		               <div class="form-group">
 							<label for="usrname"></span> Name</label>
-							<input type="text" class="form-control " name="name" ng-pattern="NameCharacter" ng-model="MemberEdit.name" ng-required="true"  id="usrname" placeholder="Enter Your Name" ng-required="true">
+							<input type="text" class="form-control " name="name" ng-pattern="NameCharacter" ng-model="MemberEdit.name" ng-required="true"  id="usrname" placeholder="Enter Your Name" ng-required="true" ng-maxlength='100'>
 							<input type="hidden" class="form-control " name="id" ng-model="MemberEdit.id" ng-required="true" value="@{{id}}" placeholder="Enter Your Name" ng-required="true">
 							<input type="hidden" name="_token" value="{{ csrf_token() }}">
 							<p class="font-red-mint error">@{{ messagesName }}</p>
 			                <div ng-show="formEdit.$submitted || formEdit.name.$touched">
 						    <span class="colorMessages" ng-show="formEdit.name.$error.required">Tell us your name.</span>
 						    <span class="colorMessages" ng-show="formEdit.name.$error.pattern">The name must be characters</span>
+						    <span class="colorMessages" ng-show="formEdit.name.$invalid">The name may not be greater than 100 characters.</span>
+
 						    </div>
 
 		               </div>
@@ -199,12 +207,20 @@
 		               <div class="form-group">
 		                  <label for="psw"> Address</label>
 		                  
-		                  <textarea name="address" class="form-control" ng-model="MemberEdit.address" ></textarea>
+		                  <textarea name="address" class="form-control" ng-model="MemberEdit.address" ng-maxlength='300' ng-required="true"></textarea>
+		                   	<div ng-show="formEdit.$submitted || formEdit.address.$touched">
+						        <span class="colorMessages" ng-show="formEdit.address.$error.required">Tell us your address. </span>
+						        <span class="colorMessages" ng-show="formEdit.address.$invalid">The address may not be greater than 300 characters.</span>
+						    </div>
 		               </div>
 		               <div class="form-group">
 		                  	<label for="psw"> Avatar</label>
 		                 	<input type="file" class="form-control" name="photo" file-model="MemberEdit.files" onchange="angular.element(this).scope().uploadImage(files)" />
-		                  <p class="font-red-mint error">@{{ messagesError }}</p>
+		                  	<p class="font-red-mint error">@{{ messagesError }}</p>
+
+		                  	<div class="form-group" >
+                                <img class="img-thumbnail" style="width:100px;height:80px;" ng-src="{{url('images')}}/@{{image}}" />
+                            </div>
 		               </div>
 		               	<button type="submit" class=" btn btn-default btn-success btn-block" ng-click="save(state,id)" ng-disabled="formEdit.$invalid"><span class="glyphicon glyphicon-off"></span> sửa</button>
 		            </form>
