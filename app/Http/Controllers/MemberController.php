@@ -34,10 +34,10 @@ class MemberController extends Controller
             $imageName = time().'.'.$request->photo->getClientOriginalExtension();
             $request->photo->move(public_path('images'), $imageName);
             $data = $request->all();
-            $data['name']       = strip_tags(trim($request->name)); 
-            $data['gender']     = strip_tags(trim($request->gender));
-            $data['age']        = strip_tags(trim($request->age));
-            $data['address']    = htmlentities(trim($request->address));
+            $data['name']       = trim($request->name); 
+            $data['gender']     = trim($request->gender);
+            $data['age']        = trim($request->age);
+            $data['address']    = trim($request->address);
             $data['photo']      = $imageName;
             $datas = Member::create($data);
             DB::commit();
@@ -98,10 +98,10 @@ class MemberController extends Controller
             {
                 
                 $customer=Member::find($id);
-                $customer->name     = strip_tags(trim($request->name));
-                $customer->gender   = strip_tags(trim($request->gender));
-                $customer->age      = strip_tags(trim($request->age));
-                $customer->address  = htmlentities(trim($request->address));
+                $customer->name     = trim($request->name);
+                $customer->gender   = trim($request->gender);
+                $customer->age      = trim($request->age);
+                $customer->address  = trim($request->address);
                 $customer->save();
                 return $this->getList();
                 
@@ -112,10 +112,10 @@ class MemberController extends Controller
                     $request->photo->move(public_path('images'), $imageName);
                     $id = $id;
                     $customer = Member::find($id);
-                    $customer->name     = $request->name;
-                    $customer->gender   = $request->gender;
-                    $customer->age      = $request->age;
-                    $customer->address  = $request->address;
+                    $customer->name     = trim($request->name);
+                    $customer->gender   = trim($request->gender);
+                    $customer->age      = trim($request->age);
+                    $customer->address  = trim($request->address);
                     $customer->photo    = $imageName; 
                     $customer->save();
 

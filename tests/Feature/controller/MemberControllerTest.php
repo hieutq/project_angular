@@ -29,6 +29,8 @@ class MemberControllerTest extends TestCase
     //     }
     // }
 
+	/** test get list member */
+
 	public function testgetList ()
 	{
 		$Member = factory(Member::class)->create();
@@ -39,6 +41,7 @@ class MemberControllerTest extends TestCase
 		
 	}
 
+	/** test get id  */
 	public function testgetEdit ()
 	{
 		$Member = factory(Member::class)->create();
@@ -49,7 +52,42 @@ class MemberControllerTest extends TestCase
 		
 	}
 	
-	
-	
+	/** test add new Member */
+	public function testgetAdd() 
+	{
+		$Member = factory(Member::class)->create([
+			'name' => 'jenifer',
+			'age'  => 22, 
+			'address' => 'Vĩnh Phúc', 
+			'gender'	=> 1, 
+		]);
 
+		$found_Member  = Member::find($Member->id);
+
+		$this->assertEquals($Member->name,'jenifer');
+		$this->assertEquals($Member->age,'22');
+		$this->assertEquals($Member->address,'Vĩnh Phúc');
+		$this->assertEquals($Member->gender,1);
+
+		$this->assertDatabaseHas('members',['name'=>'jenifer','age'=>22, 'address'=>'Vĩnh Phúc','gender' => 1]);
+	}
+
+	/** test can be delete a member */
+
+	public function testdeleteMember() 
+	{
+		$Member = factory(Member::class)->create([
+			'name' => 'jenifer',
+			'age'  => 22, 
+			'address' => 'Vĩnh Phúc', 
+			'gender'	=> 1, 
+		]);
+
+		$found_Member  = Member::find($Member->id);
+
+		$found_Member->delete();
+
+		$this->assertDatabaseHas('members',['name'=>'jenifer','age'=>22, 'address'=>'Vĩnh Phúc','gender' => 1]);
+	}
+	
 }

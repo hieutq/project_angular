@@ -195,9 +195,9 @@ app.controller ('MemberController' ,function($scope, $http, API) {
        var ext = files[0].name.match(/\.(.+)$/)[1];
        if(angular.lowercase(ext) ==='jpg' || angular.lowercase(ext) ==='jpeg' || angular.lowercase(ext) ==='png'){
        		var image = files[0].size;
-       		if (image > 10*1024*1024) {
-       			$('.error').show();
-       			$scope.messagesError 	= 'The photo may not be greater than 10 MB.';
+       		if (image > 1024*1024) {
+       			$('.hieuit').show().css('display', "block");
+       			$scope.messagesErrorimage= 'The photo may not be greater than 10 MB.';
 
        			$('#formMemberEdit button[type="submit"]').prop('disabled',true);
        		}
@@ -210,7 +210,7 @@ app.controller ('MemberController' ,function($scope, $http, API) {
        }  
        else{
        	$('.error').show();
-        $scope.messagesError 	= 'The photo must be a file of type: jpeg, png, gif.';
+        $scope.messagesErrorimage 	= 'The photo must be a file of type: jpeg, png, gif.';
         $('#formMemberEdit button[type="submit"]').prop('disabled',true);
        }       
     }

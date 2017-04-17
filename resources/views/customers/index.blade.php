@@ -38,50 +38,43 @@
 	         <table class="table table-striped table-bordered table-hover">
 	            <thead>
 	               <tr>
-	                  <th class="stl-column color-column">#</th>
-	                  <th class="stl-column color-column" ng-click="sortType = 'name'; sortReverse = !sortReverse">Tên
-						<span ng-show="sortType == 'name' && !sortReverse" class="fa fa-caret-down"></span>
-            			<span ng-show="sortType == 'name' && sortReverse" class="fa fa-caret-up"></span>
-	                  </th>
-	                  <th class="stl-column color-column">Giới Tính</th>
-	                  <th class="stl-column color-column" ng-click="sortType = 'age'; sortReverse = !sortReverse">Tuổi
-						<span ng-show="sortType == 'age' && !sortReverse" class="fa fa-caret-down"></span>
-            			<span ng-show="sortType == 'age' && sortReverse" class="fa fa-caret-up"></span>
-	                  </th>
-	                  <th class="stl-column color-column" ng-click="sortType = 'address'; sortReverse = !sortReverse">Địa Chỉ
-						<span ng-show="sortType == 'address' && !sortReverse" class="fa fa-caret-down"></span>
-            			<span ng-show="sortType == 'address' && sortReverse" class="fa fa-caret-up"></span>
-	                  </th>
-	                  <th class="stl-column color-column">Avatar</th>
-	                  <th class="stl-column color-column">Hành động</th>
+	                  	<th class="stl-column color-column">#</th>
+						<th class="stl-column color-column">Avatar</th>
+						<th class="stl-column color-column" ng-click="sortType = 'name'; sortReverse = !sortReverse">Tên
+							<span ng-show="sortType == 'name' && !sortReverse" class="fa fa-caret-down"></span>
+							<span ng-show="sortType == 'name' && sortReverse" class="fa fa-caret-up"></span>
+						</th>
+						<th class="stl-column color-column">Giới Tính</th>
+						<th class="stl-column color-column" ng-click="sortType = 'age'; sortReverse = !sortReverse">Tuổi
+							<span ng-show="sortType == 'age' && !sortReverse" class="fa fa-caret-down"></span>
+							<span ng-show="sortType == 'age' && sortReverse" class="fa fa-caret-up"></span>
+						</th>
+						<th class="stl-column color-column" ng-click="sortType = 'address'; sortReverse = !sortReverse">Địa Chỉ
+							<span ng-show="sortType == 'address' && !sortReverse" class="fa fa-caret-down"></span>
+							<span ng-show="sortType == 'address' && sortReverse" class="fa fa-caret-up"></span>
+						</th>
+
+						<th class="stl-column color-column">Hành động</th>
 	               </tr>
 	            </thead>
 	            <tbody>
 	               
 	               <tr  ng-repeat="db in members | orderBy:sortType:sortReverse">
-	                  <td class="text-center">@{{ db.id }}</td>
-	                  <td class="text-center">@{{ db.name }}</td>
-	                  <td class="text-center" ng-if="db.gender==1">Nam</td>
-	                  <td class="text-center" ng-if="db.gender==0">Nữ</td>
-	                  <td class="text-center">@{{ db.age }}</td>
-	                  <td class="text-center">@{{ db.address }}</td>
-	                  <td class="text-center"><img ng-src="{{asset('images')}}/@{{db.photo }}" class="imge" height="150" width="150" alt=""></td>
-	                  <td class="text-center">
-	                     {{-- <a href="#" class="btn btn-outline btn-circle btn-sm blue" ng-click="modal('detail',db.id)">
-	                     <i class="fa fa-eye" aria-hidden="true"></i> Chi tiết
-	                     </a> --}}
-	                     <a href="#" class="btn btn-outline btn-circle green btn-sm purple idEdit"   ng-click="modal('edit',db.id)">
-	                     <i class="fa fa-list" aria-hidden="true"></i> Sửa
-	                     </a>
-	                     {{-- 
-	                     <form action="#" method="DELETE" style="display: initial;"> --}}
-	                        <a href="#" type="submit" class="btn btn-outline btn-circle dark btn-sm red" ng-click="confirmDelete(db.id)">
-	                        <i class="fa fa-trash-o"></i> Xóa 
-	                        </a>
-	                        {{-- 
-	                     </form>
-	                     --}}
-	                  </td>
+	                  	<td class="text-center">@{{ db.id }}</td>
+	                  	<td class="text-center"><img ng-src="{{asset('images')}}/@{{db.photo }}" class="imge" height="150" width="150" alt=""></td>
+	                  	<td class="text-center">@{{ db.name }}</td>
+	                  	<td class="text-center" ng-if="db.gender==1">Nam</td>
+	                  	<td class="text-center" ng-if="db.gender==0">Nữ</td>
+	                  	<td class="text-center">@{{ db.age }}</td>
+	                  	<td class="text-center">@{{ db.address }}</td>            
+	                  	<td class="text-center">
+	                     	<a href="#" class="btn btn-outline btn-circle green btn-sm purple idEdit"   ng-click="modal('edit',db.id)">
+	                     		<i class="fa fa-list" aria-hidden="true"></i> Sửa
+	                     	</a>
+							<a href="#" type="submit" class="btn btn-outline btn-circle dark btn-sm red" ng-click="confirmDelete(db.id)">
+								<i class="fa fa-trash-o"></i> Xóa 
+							</a>
+	                  	</td>
 
 	               </tr>
 	            </tbody>
@@ -216,7 +209,7 @@
 		               <div class="form-group">
 		                  	<label for="psw"> Avatar</label>
 		                 	<input type="file" class="form-control" name="photo" file-model="MemberEdit.files" onchange="angular.element(this).scope().uploadImage(files)" />
-		                  	<p class="font-red-mint error">@{{ messagesError }}</p>
+		                  	<span class=" hieuit"  >@{{messagesErrorimage}}</span>
 
 		                  	<div class="form-group" >
                                 <img class="img-thumbnail" style="width:100px;height:80px;" ng-src="{{url('images')}}/@{{image}}" />
