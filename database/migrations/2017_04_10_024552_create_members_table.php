@@ -21,7 +21,6 @@ class CreateMembersTable extends Migration
             $table->mediumText('address')->nullable();
             $table->string('photo')->nullable();
             $table->tinyInteger('status')->default(1)->comment('1: Active, 0: Deactive');
-            $table->softDeletes();
             $table->timestamps();
         });
     }

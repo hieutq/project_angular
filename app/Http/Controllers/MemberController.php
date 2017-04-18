@@ -11,20 +11,20 @@ class MemberController extends Controller
 {
    public function getList() 
    {
-        $datas =  Member::orderby('id','DESC')->get();
+        $datas =  Member::all();
         return response()->json($datas);
     }
 
     public function getAdd (Request $request) 
     {
+
         $data = Member::Validate_rule ($request->all(), Member::$rules, Member::$messages);
 
         if ($data['error']) {
-
             return response()->json([
                 'error'      => true,
                 'messages'   =>$data['messages']
-            ],200);
+            ],405);
 
         }
 
@@ -88,20 +88,22 @@ class MemberController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'error' => true,
-                'message' => $validator->errors(),
-            ], 200);
+                'messages' => $validator->errors(),
+            ], 405);
         }
 
         DB::beginTransaction();
         try {
             if (!$request->hasFile('photo')) 
             {
-                
+
+
                 $customer=Member::find($id);
-                $customer->name     = trim($request->name);
-                $customer->gender   = trim($request->gender);
-                $customer->age      = trim($request->age);
-                $customer->address  = trim($request->address);
+
+                $customer->name     = $request->name;
+                $customer->gender   = $request->gender;
+                $customer->age      = $request->age;
+                $customer->address  = $request->address;
                 $customer->save();
                 return $this->getList();
                 

@@ -11,6 +11,12 @@
 		.imge {
 			border-radius: 4px;
 		}
+		.active {
+			display: inline!important;
+		}
+		.disactive{
+			display: none!important;
+		}
 	</style>
 @endsection
 
@@ -209,7 +215,7 @@
 		               <div class="form-group">
 		                  	<label for="psw"> Avatar</label>
 		                 	<input type="file" class="form-control" name="photo" file-model="MemberEdit.files" onchange="angular.element(this).scope().uploadImage(files)" />
-		                  	<span class=" hieuit"  >@{{messagesErrorimage}}</span>
+		                  	<span class="error hieuit"  >@{{messagesErrorimage}}</span>
 
 		                  	<div class="form-group" >
                                 <img class="img-thumbnail" style="width:100px;height:80px;" ng-src="{{url('images')}}/@{{image}}" />
