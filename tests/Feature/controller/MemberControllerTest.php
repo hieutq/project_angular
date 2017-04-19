@@ -7,10 +7,9 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Models\Member;
-
 class MemberControllerTest extends TestCase
 {
-	use DatabaseMigrations;
+    use DatabaseMigrations;
 	use WithoutMiddleware;
 
 	/**
@@ -72,6 +71,29 @@ class MemberControllerTest extends TestCase
 		$this->assertDatabaseHas('members',['name'=>'jenifer','age'=>22, 'address'=>'Vĩnh Phúc','gender' => 1]);
 	}
 
+
+
+	public function testpostEdit() 
+	{
+		$Member = factory(Member::class)->create([
+			'name' => 'Babylong',
+			'age'  => 24, 
+			'address' => 'abc', 
+			'gender'	=> 1, 
+		]);
+		$id_member =$Member->id;
+		$reuquest_array = [
+			'name' => 'Tung',
+			'age'  => 23, 
+			'address' => 'xyz', 
+			'gender'	=> 0, 
+		];
+        $response = $this->call('POST', '/edit/'.$id_member, $reuquest_array);
+        $this->assertEquals(200, $response->status());
+        $this->assertDatabaseHas('members',
+            ['name' => $reuquest_array['name'], 'address' =>$reuquest_array['address'], 'age' =>(int)$reuquest_array['age'], 'gender' => (int)$reuquest_array['gender']]);
+	}
+
 	/** test can be delete a member */
 
 	public function testdeleteMember() 
@@ -79,7 +101,7 @@ class MemberControllerTest extends TestCase
 		$Member = factory(Member::class)->create([
 			'name' => 'jenifer',
 			'age'  => 22, 
-			'address' => 'Vĩnh Phúc', 
+			'address' => 'Vinh Phuc', 
 			'gender'	=> 1, 
 		]);
 
@@ -87,7 +109,6 @@ class MemberControllerTest extends TestCase
 
 		$found_Member->delete();
 
-		$this->assertDatabaseHas('members',['name'=>'jenifer','age'=>22, 'address'=>'Vĩnh Phúc','gender' => 1]);
+		$this->assertDatabaseMissing('members',['name'=>'jenifer','age'=>22, 'address'=>'Vĩnh Phúc','gender' => 1]);
 	}
-	
 }

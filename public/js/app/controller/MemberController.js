@@ -38,11 +38,11 @@ app.controller ('MemberController' ,function($scope, $http, API) {
 				$('.error').hide();
 				$('#myModalAdd').modal('show');
 				$scope.frmTitle = " Thêm Thành Viên";
-
 				break;
 			case "edit" : 
-				$('.error').hide();
-				$('#myModalEdit').modal('show');	
+				$('.error').removeClass('active')	
+				$('.error').hide().addClass('disactive');
+				$('#myModalEdit').modal('show');
 				$scope.id = id;
 				$http({
 					method : 'get',
@@ -195,8 +195,9 @@ app.controller ('MemberController' ,function($scope, $http, API) {
        var ext = files[0].name.match(/\.(.+)$/)[1];
        if(angular.lowercase(ext) ==='jpg' || angular.lowercase(ext) ==='jpeg' || angular.lowercase(ext) ==='png'){
        		var image = files[0].size;
-       		if (image > 1024*1024) {
-       			$('.hieuit').show().css('display', "block");
+       		if (image > 10*1024*1024) {
+       			$('.error').removeClass('disactive');
+       			$('.error').show().addClass('active');
        			$scope.messagesErrorimage= 'The photo may not be greater than 10 MB.';
 
        			$('#formMemberEdit button[type="submit"]').prop('disabled',true);
@@ -209,7 +210,7 @@ app.controller ('MemberController' ,function($scope, $http, API) {
        		$('#formMemberEdit button[type="submit"]').prop('disabled',false);
        }  
        else{
-       	$('.error').show();
+       	$('.hieuit').show().addClass('active');
         $scope.messagesErrorimage 	= 'The photo must be a file of type: jpeg, png, gif.';
         $('#formMemberEdit button[type="submit"]').prop('disabled',true);
        }       
