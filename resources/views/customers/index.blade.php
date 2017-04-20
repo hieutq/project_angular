@@ -17,9 +17,6 @@
 	.disactive{
 		display: none!important;
 	}
-	.imagesize {
-		display: inline!important;
-	}
 </style>
 @endsection
 
@@ -222,7 +219,7 @@
 									<img class="img-thumbnail" style="width:100px;height:80px;" ng-src="{{url('images')}}/@{{image}}" />
 								</div>
 							</div>
-							<button type="submit" class=" btn btn-default btn-success btn-block" ng-click="save(state,id)" ng-disabled="formEdit.$invalid"><span class="glyphicon glyphicon-off"></span> sửa</button>
+							<button type="submit" class=" btn btn-default btn-success btn-block submit" ng-click="save(state,id)" ng-disabled="formEdit.$invalid"><span class="glyphicon glyphicon-off"></span> sửa</button>
 						</form>
 					</div>
 				</div>

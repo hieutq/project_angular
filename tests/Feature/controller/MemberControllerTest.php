@@ -62,7 +62,7 @@ class MemberControllerTest extends TestCase
 			]);
 		$id_member =$Member->id;
 		$reuquest_array = [
-		'name' => 'Tung',
+		'name' => '12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901',
 		'age'  => 23, 
 		'address' => 'xyz', 
 		'gender'	=> 0, 

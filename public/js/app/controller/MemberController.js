@@ -87,10 +87,10 @@ app.controller ('MemberController' ,function($scope, $http, API) {
   					console.log(response);
   					$('.error').removeClass('disactive');
   					$('.error').show().addClass('active');
-  					$scope.messagesError 	= response.data.messages.photo;
-  					$scope.messagesName 	= response.data.messages.name;
-  					$scope.messagesGender 	= response.data.messages.gender;
-  					$scope.messagesAge 		= response.data.messages.age;
+  					$scope.messagesError 	= response.data.messages.photo[0];
+  					$scope.messagesName 	= response.data.messages.name[0];
+  					$scope.messagesGender 	= response.data.messages.gender[0];
+  					$scope.messagesAge 		= response.data.messages.age[0];
 
   				}
   				else{
@@ -128,13 +128,12 @@ app.controller ('MemberController' ,function($scope, $http, API) {
   					console.log(response);
   					$('.error').removeClass('disactive');
   					$('.error').show().addClass('active');
-  					$scope.messagesError 	= response.data.messages.photo;
-  					$scope.messagesName 	= response.data.messages.name;
-  					$scope.messagesGender 	= response.data.messages.gender;
-  					$scope.messagesAge 		= response.data.messages.age;
+  					$scope.messagesErrorimage 	= response.data.messages.photo[0];
+  					$scope.messagesName 	= response.data.messages.name[0];
+  					$scope.messagesGender 	= response.data.messages.gender[0];
+  					$scope.messagesAge 		= response.data.messages.age[0];
   				}
   				else{
-  					console.log('success');
   					$scope.members = response.data;
   					$('#myModalEdit').modal('hide');
   					toastr["success"]("Sửa thành viên thành công!");
@@ -180,7 +179,6 @@ app.controller ('MemberController' ,function($scope, $http, API) {
   		$scope.Member = {};
   	}
   	$scope.imageUpload = function(event){
-
   		var files 		= event.target.files;
   		var file 		= files[files.length-1];
   		$scope.file 	= file;
@@ -196,23 +194,20 @@ app.controller ('MemberController' ,function($scope, $http, API) {
   			$scope.step = e.target.result;
   		})
   	}
-  	$scope.uploadImage = function (files) {           
+  	$scope.uploadImage = function (files) {         
   		var ext = files[0].name.match(/\.(.+)$/)[1];
   		if (angular.lowercase(ext) ==='jpg' || angular.lowercase(ext) ==='jpeg' || angular.lowercase(ext) ==='png') {
   			var image = files[0].size;
-  			if (image > 10*1024*1024) {
-  				$('.error').removeClass('disactive');
-  				$('.error').addClass('imagesize');
-  				$scope.messagesErrorimage= 'The photo may not be greater than 10 MB.';
+  			if (image > 10485760) {
   				$('#formMemberEdit button[type="submit"]').prop('disabled',true);
+  				$('.error').removeClass('disactive');
+  				$('.error').addClass('active');
+  				$scope.messagesErrorimage = 'The photo may not be greater than 10 MB.';
   			} else {
-  				$('.error').removeClass('imagesize');
-  				$('.error').hide();
+  				$('.error').removeClass('active');
+  				$('.error').addClass('disactive');
   				$('#formMemberEdit button[type="submit"]').prop('disabled',false);
   			}
-  			$('.error').removeClass('active');
-  			$('.error').hide();
-  			$('#formMemberEdit button[type="submit"]').prop('disabled',false);
   		} else {
   			$('.error').removeClass('disactive');
   			$('.error').addClass('active');

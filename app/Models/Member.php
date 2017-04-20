@@ -55,4 +55,90 @@ class Member extends Model
         'messages' => 'successfully'
         ];
     }
+
+    /**
+     * List Member.
+     *
+     * @var array
+     */
+    public static function listMember()
+    {
+        $datas = Member::all();
+        return $datas;
+    }
+
+    /**
+     * show a Member.
+     *
+     * @var array
+     */
+    public static function show($id)
+    {
+        $datas = Member::find($id);
+        return $datas;
+    }
+
+    /**
+     * add new a Member.
+     *
+     * @var array
+     */
+    public static function store($request)
+    {
+        if ($request->hasFile('photo')) {
+            $imageName = time().'.'.$request->photo->getClientOriginalExtension();
+            $request->photo->move(public_path('images'), $imageName);
+            $data = $request->all();
+            $data['name']       = trim($request->name);
+            $data['gender']     = trim($request->gender);
+            $data['age']        = trim($request->age);
+            $data['address']    = trim($request->address);
+            $data['photo']      = $imageName;
+            $datas = Member::create($data);
+            return $datas;
+        }
+    }
+
+    /**
+     * Edit a Member.
+     *
+     * @var array
+     */
+    public static function edit($request,$id)
+    {
+        $customer=Member::find($id);
+        if ($request->hasFile('photo')) {
+            $rules = [
+            'photo'     =>'image|mimes:jpeg,png,gif|max:10240',
+
+            ];
+            $messages = [
+            'photo.image'           => 'The photo must be an image.',
+            'photo.mimes'           => 'The photo must be a file of type: jpeg, png, gif.',
+            'photo.max'             => 'The photo may not be greater than 10 MB.',
+            ];
+            $validator = Validator::make($request->all(), $rules, $messages);
+            if ($validator->fails()) {
+                return response()->json([
+                    'error' => false,
+                    'messages' => 'thêm ảnh thành công',
+                    ], 200);
+            }
+            $imageName = rand(1111, 1000).'.'.$request->photo->getClientOriginalExtension();
+            $request->photo->move(public_path('images'), $imageName);
+
+            $customer->photo    = $imageName;
+        } 
+        $customer->name     = trim($request->name);
+        $customer->gender   = trim($request->gender);
+        $customer->age      = trim($request->age);
+        $customer->address  = trim($request->address);
+        $customer->save();
+        return $customer;
+
+    }
 }
+
+
+
+
