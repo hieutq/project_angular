@@ -14,135 +14,135 @@ class AddValidationTest extends TestCase
      * @test
      * @return void
      */
-    protected function assertFalseState($request_array) {
+    protected function assertFalseState($request_array)
+    {
         $response = $this->call('POST', '/add', $request_array);
         $data = json_decode($response->getContent(), true);
-        $this->assertEquals(405, $response->status());
-        if ($data['error']==true) {
-        	print_r($data['messages']);
+        $this->assertEquals(200, $response->status());
+        if ($data['error']==false) {
+            print_r($data['messages']);
             $this->assertTrue(true);
-        } else {
+        } else{
+            echo "successfully";
             $this->assertTrue(false);
         }
     }
 
     /** Test validate name 101 is larger than characters */
 
-    public function testValidationName ()
+    public function testValidationName()
     {
-    	$request_Member = [
-    		'name' 		=> 'hieu123456hieu123456hieu123456hieu123456hieu123456hieu123456hieu123456hieu123456hieu123456hieu1234561',
-	    	'address' 	=> 'Test Đia Chi',
-	    	'age'	  	=> 22,
-	    	'gender'	=> 1,
-
-    	];
-    	$this->assertFalseState($request_Member);
+        $request_Member = [
+        'name'      => '12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901',
+        'address'   => 'Test Đia Chi',
+        'age'       => 22,
+        'gender'    => 1,
+        ];
+        $this->assertFalseState($request_Member);
     }
     /** tests validation not required */
     public function testIsNameEmpty()
     {
-    	$request_Member = [
-    		'name' 		=> '',
-	    	'address' 	=> 'Test Đia Chi',
-	    	'age'	  	=> 22,
-	    	'gender'	=> 1,
+        $request_Member = [
+        'name'     => '',
+        'address'  => 'Test Đia Chi',
+        'age'      => 22,
+        'gender'   => 1,
 
-    	];
-    	$this->assertFalseState($request_Member);
+        ];
+        $this->assertFalseState($request_Member);
     }
     /** test validate address larger than 300 character */
-    public function testAddressValidation ()
+    public function testAddressValidation()
     {
-    	$request_Member = [
-    		'name' 		=> 'Tạ Quang Hiếu',
-	    	'address' 	=> 'addresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstest',
-	    	'age'	  	=> 22,
-	    	'gender'	=> 1,
+        $request_Member = [
+        'name'      => 'Tạ Quang Hiếu',
+        'address'   => 'addresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstestaddresstest',
+        'age'       => 22,
+        'gender'    => 1,
 
-    	];
-    	$this->assertFalseState($request_Member);
+        ];
+        $this->assertFalseState($request_Member);
     }
 
     /** test empty address */
 
-    public function testIsAddressEmpty () 
+    public function testIsAddressEmpty()
     {
-    	$request_Member = [
-    		'name' 		=> 'Tạ Quang Hiếu',
-	    	'address' 	=> '',
-	    	'age'	  	=> 22,
-	    	'gender'	=> 1,
+        $request_Member = [
+        'name'        => 'Tạ Quang Hiếu',
+        'address'     => '',
+        'age'         => 22,
+        'gender'      => 1,
 
-    	];
+        ];
 
-    	$this->assertFalseState($request_Member);
+        $this->assertFalseState($request_Member);
     }
 
     /**
      * test column age have type more than 2 digits
      */
-    public function testAgeValidation ()
+    public function testAgeValidation()
     {
-    	$request_Member = [
-    		'name' 		=> 'Tạ Quang Hiếu',
-	    	'address' 	=> '',
-	    	'age'	  	=> 222,
-	    	'gender'	=> 1,
+        $request_Member = [
+        'name'      => 'Tạ Quang Hiếu',
+        'address'   => 'Vĩnh Phúc',
+        'age'       => 222,
+        'gender'    => 1,
 
-    	];
+        ];
 
-    	$this->assertFalseState($request_Member);
+        $this->assertFalseState($request_Member);
     }
 
     /**
      * test column age required
      */
-    public function testAgeEmpty ()
+    public function testAgeEmpty()
     {
-    	$request_Member = [
-    		'name' 		=> 'Tạ Quang Hiếu',
-	    	'address' 	=> 'Address Test',
-	    	'age'	  	=> '',
-	    	'gender'	=> 1,
+        $request_Member = [
+        'name'      => 'Tạ Quang Hiếu',
+        'address'   => 'Address Test',
+        'age'       => '',
+        'gender'    => 1,
 
-    	];
+        ];
 
-    	$this->assertFalseState($request_Member);
+        $this->assertFalseState($request_Member);
     }
 
 
     /**
      * test column age must be number
      */
-    public function testAgeNumber ()
+    public function testAgeNumber()
     {
-    	$request_Member = [
-    		'name' 		=> 'Tạ Quang Hiếu',
-	    	'address' 	=> 'Address Test',
-	    	'age'	  	=> 'aa',
-	    	'gender'	=> 1,
+        $request_Member = [
+        'name'      => 'Tạ Quang Hiếu',
+        'address'   => 'Address Test',
+        'age'       => 'aa',
+        'gender'    => 1,
 
-    	];
+        ];
 
-    	$this->assertFalseState($request_Member);
+        $this->assertFalseState($request_Member);
     }
 
     /**
      * [testGenderEmptyEdit the column Gender required]
      * @return [type] [description]
      */
-    public function testGenderEmpty ()
+    public function testGenderEmpty()
     {
-    	$request_array = [
-    		'name' 		=> 'Tạ Quang Hiếu',
-	    	'address' 	=> 'Vĩnh Phúc',
-	    	'age'	  	=> '22',
-	    	'gender'	=> '',
+        $request_array = [
+        'name'     => 'Tạ Quang Hiếu',
+        'address'  => 'Vĩnh Phúc',
+        'age'      => '22',
+        'gender'   => '',
 
-    	];
+        ];
 
-    	$this->assertFalseState($request_array);
+        $this->assertFalseState($request_array);
     }
-
 }
