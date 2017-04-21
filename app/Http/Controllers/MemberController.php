@@ -26,15 +26,11 @@ class MemberController extends Controller
                 'messages'   =>$data['messages']
                 ], 200);
         }
-
-        DB::beginTransaction();
-        try {
-            Member::store($request);
-            DB::commit();
-            return $this->getList();       
-        } catch (Exception $e) {
-            DB::rollback();
-        }
+        Member::store($request);
+        return response()->json([
+            'error' => true,
+            'messages' => 'Create successfully'
+            ]);
     }
 
     public function getEdit($id)
@@ -78,7 +74,7 @@ class MemberController extends Controller
 
         DB::beginTransaction();
         try {
-            Member::edit($request,$id);
+            Member::edit($request, $id);
             DB::commit();
             return $this->getList();
         } catch (Exception $e) {
@@ -90,7 +86,9 @@ class MemberController extends Controller
     {
         $customer = Member::show($id);
         $customer->delete();
-        return $this->getList();
+        return response()->json([
+            'messages' => 'Delete successfully'
+        ]);
     }
 
 

@@ -63,7 +63,7 @@ class Member extends Model
      */
     public static function listMember()
     {
-        $datas = Member::all();
+        $datas = Member::where('status', '=', 1)->get();
         return $datas;
     }
 
@@ -85,18 +85,18 @@ class Member extends Model
      */
     public static function store($request)
     {
+        $data = $request->all();
         if ($request->hasFile('photo')) {
             $imageName = time().'.'.$request->photo->getClientOriginalExtension();
             $request->photo->move(public_path('images'), $imageName);
-            $data = $request->all();
-            $data['name']       = trim($request->name);
-            $data['gender']     = trim($request->gender);
-            $data['age']        = trim($request->age);
-            $data['address']    = trim($request->address);
             $data['photo']      = $imageName;
-            $datas = Member::create($data);
-            return $datas;
         }
+        $data['name']       = trim($request->name);
+        $data['gender']     = trim($request->gender);
+        $data['age']        = trim($request->age);
+        $data['address']    = trim($request->address);
+        $datas = Member::create($data);
+        return $datas;
     }
 
     /**
@@ -104,7 +104,7 @@ class Member extends Model
      *
      * @var array
      */
-    public static function edit($request,$id)
+    public static function edit($request, $id)
     {
         $customer=Member::find($id);
         if ($request->hasFile('photo')) {
@@ -128,17 +128,12 @@ class Member extends Model
             $request->photo->move(public_path('images'), $imageName);
 
             $customer->photo    = $imageName;
-        } 
+        }
         $customer->name     = trim($request->name);
         $customer->gender   = trim($request->gender);
         $customer->age      = trim($request->age);
         $customer->address  = trim($request->address);
         $customer->save();
         return $customer;
-
     }
 }
-
-
-
-

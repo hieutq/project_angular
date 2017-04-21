@@ -199,7 +199,7 @@
                                 <h3 class="uppercase">Chức Năng</h3>
                             </li>
                            <!-- START KHÓA HỌC -->
-                            <li class="nav-item {{ Request::is('courses*') ? 'active open' : '' }}  ">
+                            <li class="nav-ite start active open">
                                 <a href="{{route('get.Member')}}" class="nav-link nav-toggle">
                                     <i class="fa fa-book"></i>
                                     <span class="title">Quản Lý Thành Viên</span>

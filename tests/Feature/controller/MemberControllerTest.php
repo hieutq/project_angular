@@ -36,18 +36,21 @@ class MemberControllerTest extends TestCase
 	/** test add new Member */
 	public function testgetAdd() 
 	{
-		$Member = factory(Member::class)->create([
-			'name' 		=> 'jenifer',
+		$request_array = [
+			'name' 		=> 'Tạ Quang Hiếu',
 			'age'  		=> 22, 
 			'address' 	=> 'Vĩnh Phúc', 
 			'gender'	=> 1, 
-			]);
-		$found_Member  = Member::find($Member->id);
-		$this->assertEquals($Member->name,'jenifer');
-		$this->assertEquals($Member->age,'22');
-		$this->assertEquals($Member->address,'Vĩnh Phúc');
-		$this->assertEquals($Member->gender,1);
-		$this->assertDatabaseHas('members',['name'=>'jenifer','age'=>22, 'address'=>'Vĩnh Phúc','gender' => 1]);
+			];
+		$response = $this->call('POST', '/add', $request_array);
+		$data = json_decode($response ->getContent(), true);
+        $this->assertEquals(200, $response->status());
+        if ($data['error']) {
+            $this->assertTrue(true);
+        } else  if ($data['error'] == false) {
+        	print_r($data['messages']);
+            $this->assertTrue(true);
+        }
 	}
 
 
@@ -55,16 +58,16 @@ class MemberControllerTest extends TestCase
 	public function testpostEdit() 
 	{
 		$Member = factory(Member::class)->create([
-			'name' => 'Babylong',
-			'age'  => 24, 
-			'address' => 'abc', 
+			'name' 		=> 'Babylong',
+			'age'  		=> 24, 
+			'address' 	=> 'abc', 
 			'gender'	=> 1, 
 			]);
-		$id_member =$Member->id;
+		$id_member 		= $Member->id;
 		$reuquest_array = [
-		'name' => '12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901',
-		'age'  => 23, 
-		'address' => 'xyz', 
+		'name' 		=> 'Tạ Quang Hiếu',
+		'age'  		=> 23, 
+		'address' 	=> 'xyz', 
 		'gender'	=> 0, 
 		];
 		$response = $this->call('POST', '/edit/'.$id_member, $reuquest_array);
@@ -78,14 +81,13 @@ class MemberControllerTest extends TestCase
 	public function testdeleteMember() 
 	{
 		$Member = factory(Member::class)->create([
-			'name' => 'jenifer',
-			'age'  => 22, 
-			'address' => 'Vinh Phuc', 
-			'gender'	=> 1, 
+			'name' 			=> 'jenifer',
+			'age'  			=> 22, 
+			'address' 		=> 'Vinh Phuc', 
+			'gender'		=> 1, 
 			]);
-
-		$found_Member  = Member::find($Member->id);
-		$found_Member->delete();
+		$id_member = $Member->id;
+		$response = $this->call('delete', '/delete/'.$id_member);
 		$this->assertDatabaseMissing('members',['name'=>'jenifer','age'=>22, 'address'=>'Vĩnh Phúc','gender' => 1]);
 	}
 }
