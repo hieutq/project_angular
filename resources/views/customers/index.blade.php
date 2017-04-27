@@ -17,6 +17,12 @@
 	.disactive{
 		display: none!important;
 	}
+	a{
+		color: black;
+	}
+	a:hover{
+		text-decoration: none;
+	}
 </style>
 @endsection
 
@@ -46,28 +52,33 @@
 						<tr>
 							<th class="stl-column color-column">#</th>
 							<th class="stl-column color-column">Avatar</th>
-							<th class="stl-column color-column" ng-click="sortType = 'name'; sortReverse = !sortReverse">Tên
-								<span ng-show="sortType == 'name' && !sortReverse" class="fa fa-caret-down"></span>
-								<span ng-show="sortType == 'name' && sortReverse" class="fa fa-caret-up"></span>
+							<th class="stl-column color-column" ng-click="sortType = 'name'; sortReverse = !sortReverse">
+								<a href="#" >Tên
+									<span ng-show="sortType == 'name' && !sortReverse" class="fa fa-caret-down"></span>
+									<span ng-show="sortType == 'name' && sortReverse" class="fa fa-caret-up"></span>
+								</a>	
 							</th>
 							<th class="stl-column color-column">Giới Tính</th>
-							<th class="stl-column color-column" ng-click="sortType = 'age'; sortReverse = !sortReverse">Tuổi
-								<span ng-show="sortType == 'age' && !sortReverse" class="fa fa-caret-down"></span>
-								<span ng-show="sortType == 'age' && sortReverse" class="fa fa-caret-up"></span>
+							<th class="stl-column color-column" ng-click="sortType = 'age'; sortReverse = !sortReverse">
+								<a href="">Tuổi
+									<span ng-show="sortType == 'age' && !sortReverse" class="fa fa-caret-down"></span>
+									<span ng-show="sortType == 'age' && sortReverse" class="fa fa-caret-up"></span>
+								</a>
 							</th>
-							<th class="stl-column color-column" ng-click="sortType = 'address'; sortReverse = !sortReverse">Địa Chỉ
-								<span ng-show="sortType == 'address' && !sortReverse" class="fa fa-caret-down"></span>
-								<span ng-show="sortType == 'address' && sortReverse" class="fa fa-caret-up"></span>
+							<th class="stl-column color-column" ng-click="sortType = 'address'; sortReverse = !sortReverse">
+								<a href="">Địa Chỉ
+									<span ng-show="sortType == 'address' && !sortReverse" class="fa fa-caret-down"></span>
+									<span ng-show="sortType == 'address' && sortReverse" class="fa fa-caret-up"></span>
+								</a>
 							</th>
 
 							<th class="stl-column color-column">Hành động</th>
 						</tr>
 					</thead>
 					<tbody>
-
 						<tr  ng-repeat="db in members | orderBy:sortType:sortReverse">
-							<td class="text-center">@{{ db.id }}</td>
-							<td class="text-center"><img ng-src="{{asset('images')}}/@{{db.photo }}" class="imge" height="150" width="150" alt=""></td>
+							<td class="text-center">@{{db.id}}</td>
+							<td class="text-center"><img class="img-thumbnail" ng-src="{{asset('images')}}/@{{db.photo }}" class="imge" height="150" width="150" alt=""></td>
 							<td class="text-center">@{{ db.name }}</td>
 							<td class="text-center" ng-if="db.gender==1">Nam</td>
 							<td class="text-center" ng-if="db.gender==0">Nữ</td>
@@ -106,7 +117,7 @@
 									<span class="colorMessages" ng-show="formAdd.name.$error.required">Tell us your name.</span>
 									<span class="colorMessages" ng-show="formAdd.name.$error.pattern">The name must be characters. </span>
 									<span class="colorMessages" ng-show="formAdd.name.$invalid">The name may not be greater than 100 characters.</span>
-									</div>
+								</div>
 							</div>
 							<div class="form-group">
 								<label for="psw"> Gender </label>
@@ -175,10 +186,9 @@
 									<span class="colorMessages" ng-show="formEdit.name.$error.required">Tell us your name.</span>
 									<span class="colorMessages" ng-show="formEdit.name.$error.pattern">The name must be characters. </span>
 									<span class="colorMessages" ng-show="formEdit.name.$invalid">The name may not be greater than 100 characters.</span>
-
 								</div>
-
 							</div>
+
 							<div class="form-group">
 								<label for="psw"> Gender </label>
 								<select name="gender" ng-model="MemberEdit.gender" class="form-control" ng-required="true">
@@ -201,20 +211,20 @@
 									<span class="colorMessages" ng-show="formEdit.age.$error.pattern">Your age must be a number and a 2 digit number</span>
 								</div>
 							</div>
+
 							<div class="form-group">
 								<label for="psw"> Address</label>
-
 								<textarea name="address" class="form-control" ng-model="MemberEdit.address" ng-maxlength='300' ng-required="true"></textarea>
 								<div ng-show="formEdit.$submitted || formEdit.address.$touched">
 									<span class="colorMessages" ng-show="formEdit.address.$error.required">Tell us your address. </span>
 									<span class="colorMessages" ng-show="formEdit.address.$invalid">The address may not be greater than 300 characters.</span>
 								</div>
 							</div>
+
 							<div class="form-group">
 								<label for="psw"> Avatar</label>
 								<input type="file" class="form-control" name="photo" file-model="MemberEdit.files" onchange="angular.element(this).scope().uploadImage(files)" />
 								<span class="error hieuit"  >@{{messagesErrorimage}}</span>
-
 								<div class="form-group" >
 									<img class="img-thumbnail" style="width:100px;height:80px;" ng-src="{{url('images')}}/@{{image}}" />
 								</div>

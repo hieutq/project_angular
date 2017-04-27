@@ -9,6 +9,8 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class AddValidationTest extends TestCase
 {
+    use DatabaseMigrations;
+    use WithoutMiddleware;
     /**
      * A basic test example.
      * @test
@@ -17,14 +19,13 @@ class AddValidationTest extends TestCase
     protected function assertFalseState($request_array)
     {
         $response = $this->call('POST', '/add', $request_array);
-        $data = json_decode($response->getContent(), true);
+        $data = json_decode($response ->getContent(), true);
         $this->assertEquals(200, $response->status());
-        if ($data['error']==false) {
+        if ($data['error']) {
+            $this->assertTrue(true);
+        } else  if ($data['error'] == false) {
             print_r($data['messages']);
             $this->assertTrue(true);
-        } else{
-            echo "successfully";
-            $this->assertTrue(false);
         }
     }
 
@@ -32,13 +33,13 @@ class AddValidationTest extends TestCase
 
     public function testValidationName()
     {
-        $request_Member = [
-        'name'      => '12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901',
-        'address'   => 'Test Đia Chi',
-        'age'       => 22,
-        'gender'    => 1,
-        ];
-        $this->assertFalseState($request_Member);
+       $request_array = [
+            'name'      => '<script>alert(ok)</script>',
+            'age'       => 22, 
+            'address'   => 'Vĩnh Phúc', 
+            'gender'    => 1, 
+            ];
+        $this->assertFalseState($request_array);
     }
     /** tests validation not required */
     public function testIsNameEmpty()
@@ -48,7 +49,6 @@ class AddValidationTest extends TestCase
         'address'  => 'Test Đia Chi',
         'age'      => 22,
         'gender'   => 1,
-
         ];
         $this->assertFalseState($request_Member);
     }

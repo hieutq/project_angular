@@ -17,17 +17,15 @@ toastr.options = {
 };
 
 app.controller ('MemberController' ,function($scope, $http, API) {
-	$scope.sortType     	= 'name'; // set the default sort type
+	$scope.sortType     	  = 'name'; // set the default sort type
   	$scope.sortReverse  	= false;  // set the default sort order
-  	$scope.NumAge 			= /^[0-9]{2}$/;
+  	$scope.NumAge 			  = /^[0-9]{2}$/;
   	$scope.NameCharacter 	= /[^0-9|'| _]+\w/;
   	$http({
   		method: 'GET',
   		url:'list',
   	}).then(function (response){
   		$scope.members = response.data;
-  	},function (response){
-
   	});
 
   	$scope.modal = function (state,id) {
@@ -50,7 +48,7 @@ app.controller ('MemberController' ,function($scope, $http, API) {
   				url :'edit/'+ id,
   			}).then(function(response){
   				$scope.MemberEdit = response.data;
-  				$scope.image = response.data.photo;
+  				$scope.image      = response.data.photo;
   			});
   			$scope.frmTitle = "Sửa Thành Viên";
   			break;
@@ -89,12 +87,17 @@ app.controller ('MemberController' ,function($scope, $http, API) {
   					$('.error').show().addClass('active');
   					$scope.messagesError 	= response.data.messages.photo[0];
   					$scope.messagesName 	= response.data.messages.name[0];
-  					$scope.messagesGender 	= response.data.messages.gender[0];
+  					$scope.messagesGender = response.data.messages.gender[0];
   					$scope.messagesAge 		= response.data.messages.age[0];
 
   				}
   				else{
-  					$scope.members = response.data;
+  					$http({
+              method: 'GET',
+              url:'list',
+            }).then(function (response){
+              $scope.members = response.data;
+            });
   					$('#formMemberAdd').trigger("reset");
   					$('#myModalAdd').modal('hide');
 
@@ -129,12 +132,17 @@ app.controller ('MemberController' ,function($scope, $http, API) {
   					$('.error').removeClass('disactive');
   					$('.error').show().addClass('active');
   					$scope.messagesErrorimage 	= response.data.messages.photo[0];
-  					$scope.messagesName 	= response.data.messages.name[0];
-  					$scope.messagesGender 	= response.data.messages.gender[0];
-  					$scope.messagesAge 		= response.data.messages.age[0];
+  					$scope.messagesName 	      = response.data.messages.name[0];
+  					$scope.messagesGender 	    = response.data.messages.gender[0];
+  					$scope.messagesAge 		      = response.data.messages.age[0];
   				}
   				else{
-  					$scope.members = response.data;
+  					$http({
+              method: 'GET',
+              url:'list',
+            }).then(function (response){
+              $scope.members = response.data;
+            });
   					$('#myModalEdit').modal('hide');
   					toastr["success"]("Sửa thành viên thành công!");
 
@@ -164,7 +172,12 @@ app.controller ('MemberController' ,function($scope, $http, API) {
   					url : 'delete/' + id,
   				}).then(function(response){
   					toastr["success"]("Xóa thành viên thành công!");
-  					$scope.members = response.data
+  					$http({
+              method: 'GET',
+              url:'list',
+            }).then(function (response){
+              $scope.members = response.data;
+            });
   				},function(response){
 
   					toastr["error"]("Đã xảy ra lỗi vui lòng kiểm tra lại !");
@@ -174,23 +187,24 @@ app.controller ('MemberController' ,function($scope, $http, API) {
   			}
   		});
   	}
-
+    /*reset Form*/
   	$scope.resetForm = function () {
-  		$scope.Member = {};
+  		$scope.Member  = {};
   	}
+
   	$scope.imageUpload = function(event){
-  		var files 		= event.target.files;
-  		var file 		= files[files.length-1];
-  		$scope.file 	= file;
-  		var reader 		= new FileReader();
-  		reader.onload 	= $scope.imageIsLoaded;
+  		var files 		 = event.target.files;
+  		var file 		   = files[files.length-1];
+  		$scope.file 	 = file;
+  		var reader 		 = new FileReader();
+  		reader.onload  = $scope.imageIsLoaded;
   		reader.readAsDataURL(file);
   	}
 
 
 
   	$scope.imageIsLoaded = function(e){
-  		$scope.$apply(function(){
+  		$scope.$apply(function(){     
   			$scope.step = e.target.result;
   		})
   	}
