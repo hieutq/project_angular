@@ -8,32 +8,32 @@ use Validator;
 class Member extends Model
 {
     protected $table = 'members';
-    protected $fillable = ['name','gender','age','address','photo','status'];
+    protected $fillable = ['name', 'gender', 'age', 'address', 'photo', 'status'];
 
 
     public static $rules = [
-    'name'      =>'required|max:100',
-    'gender'    =>'required|numeric',
-    'age'       =>'required|numeric|digits:2',
-    'photo'     =>'image|mimes:jpeg,png,gif|max:10240',
-    'address'   =>'required|max:300',
+        'name' => 'required|max:100',
+        'gender' => 'required|numeric',
+        'age' => 'required|numeric|digits:2',
+        'photo' => 'image|mimes:jpeg,png,gif|max:10240',
+        'address' => 'required|max:300',
 
     ];
 
     public static $messages = [
-    'name.required'         => 'Tell us your name.',
-    'name.max'              => 'The name may not be greater than 100 characters.',
-    'gender.required'       => 'Tell us your gender.',
-    'gender.numeric'        => 'The gender must be a number.',
-    'age.required'          => 'Tell us your age',
-    'age.numberic'          => 'The age must be a number.',
-    'age.digits'            => 'The age must be 2 digits.',
+        'name.required' => 'Tell us your name.',
+        'name.max' => 'The name may not be greater than 100 characters.',
+        'gender.required' => 'Tell us your gender.',
+        'gender.numeric' => 'The gender must be a number.',
+        'age.required' => 'Tell us your age',
+        'age.numberic' => 'The age must be a number.',
+        'age.digits' => 'The age must be 2 digits.',
         // 'photo.required'        => 'Selected a image',
-    'photo.image'           => 'The photo must be an image.',
-    'photo.mimes'           => 'The photo must be a file of type: jpeg, png, gif.',
-    'photo.max'             => 'The photo may not be greater than 10 MB.',
-    'address.max'           => 'The address may not be greater than 300 characters.',
-    'address.required'      => 'Tell us your address'
+        'photo.image' => 'The photo must be an image.',
+        'photo.mimes' => 'The photo must be a file of type: jpeg, png, gif.',
+        'photo.max' => 'The photo may not be greater than 10 MB.',
+        'address.max' => 'The address may not be greater than 300 characters.',
+        'address.required' => 'Tell us your address'
     ];
 
     /**
@@ -43,16 +43,16 @@ class Member extends Model
      */
     public static function Validate_rule($input, $rules, $messages)
     {
-        $validator =Validator::make($input, $rules, $messages);
+        $validator = Validator::make($input, $rules, $messages);
         if ($validator->fails()) {
             return [
-            'error' => true,
-            'messages' => $validator->errors()
+                'error' => true,
+                'messages' => $validator->errors()
             ];
         }
         return [
-        'error' => false,
-        'messages' => 'successfully'
+            'error' => false,
+            'messages' => 'successfully'
         ];
     }
 
@@ -87,14 +87,14 @@ class Member extends Model
     {
         $data = $request->all();
         if ($request->hasFile('photo')) {
-            $imageName = time().'.'.$request->photo->getClientOriginalExtension();
+            $imageName = time() . '.' . $request->photo->getClientOriginalExtension();
             $request->photo->move(public_path('images'), $imageName);
-            $data['photo']      = $imageName;
+            $data['photo'] = $imageName;
         }
-        $data['name']       = trim($request->name);
-        $data['gender']     = trim($request->gender);
-        $data['age']        = trim($request->age);
-        $data['address']    = trim($request->address);
+        $data['name'] = trim($request->name);
+        $data['gender'] = trim($request->gender);
+        $data['age'] = trim($request->age);
+        $data['address'] = trim($request->address);
         $datas = Member::create($data);
         return $datas;
     }
@@ -106,33 +106,33 @@ class Member extends Model
      */
     public static function edit($request, $id)
     {
-        $customer=Member::find($id);
+        $customer = Member::find($id);
         if ($request->hasFile('photo')) {
             $rules = [
-            'photo'     =>'image|mimes:jpeg,png,gif|max:10240',
+                'photo' => 'image|mimes:jpeg,png,gif|max:10240',
 
             ];
             $messages = [
-            'photo.image'           => 'The photo must be an image.',
-            'photo.mimes'           => 'The photo must be a file of type: jpeg, png, gif.',
-            'photo.max'             => 'The photo may not be greater than 10 MB.',
+                'photo.image' => 'The photo must be an image.',
+                'photo.mimes' => 'The photo must be a file of type: jpeg, png, gif.',
+                'photo.max' => 'The photo may not be greater than 10 MB.',
             ];
             $validator = Validator::make($request->all(), $rules, $messages);
             if ($validator->fails()) {
                 return response()->json([
                     'error' => false,
                     'messages' => 'thêm ảnh thành công',
-                    ], 200);
+                ], 200);
             }
-            $imageName = rand(1111, 1000).'.'.$request->photo->getClientOriginalExtension();
+            $imageName = rand(1111, 1000) . '.' . $request->photo->getClientOriginalExtension();
             $request->photo->move(public_path('images'), $imageName);
 
-            $customer->photo    = $imageName;
+            $customer->photo = $imageName;
         }
-        $customer->name     = trim($request->name);
-        $customer->gender   = trim($request->gender);
-        $customer->age      = trim($request->age);
-        $customer->address  = trim($request->address);
+        $customer->name = trim($request->name);
+        $customer->gender = trim($request->gender);
+        $customer->age = trim($request->age);
+        $customer->address = trim($request->address);
         $customer->save();
         return $customer;
     }
