@@ -23,25 +23,23 @@ class UpdateValidationTest extends TestCase
             'age' => 24,
             'address' => 'abc',
             'gender' => 1,
-            ]);
+        ]);
         $request_array = [
-        'name' => '12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901',
-        'address' => 'Test Đia Chi',
-        'age' => 22,
-        'gender' => 1,
+            'name' => '12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901',
+            'address' => 'Test Đia Chi',
+            'age' => 22,
+            'gender' => 1,
         ];
         $id_member = $Member->id;
         $response = $this->call('POST', '/edit/' . $id_member, $request_array);
         $this->assertEquals(405, $response->status());
-        $this->assertDatabaseMissing('members' ,
+        $this->assertDatabaseMissing('members',
             [
-            'name' => $request_array['name'],
-            'address' => $request_array['address'],
-            'age' => (int)$request_array['age'] ,
-            'gender' => (int)$request_array['gender']
+                'name' => $request_array['name'],
+                'address' => $request_array['address'],
+                'age' => (int)$request_array['age'],
+                'gender' => (int)$request_array['gender']
             ]);
-        $data = json_decode($response->getContent(), true);
-        
     }
 
     /**
@@ -55,26 +53,25 @@ class UpdateValidationTest extends TestCase
             'age' => 24,
             'address' => 'abc',
             'gender' => 1,
-            ]);
+        ]);
         $request_array = [
-        'name' => '',
-        'address' => 'Test Đia Chi',
-        'age' => 22,
-        'gender' => 1,
+            'name' => '',
+            'address' => 'Test Đia Chi',
+            'age' => 22,
+            'gender' => 1,
 
         ];
         $id_member = $Member->id;
         $response = $this->call('POST', '/edit/' . $id_member, $request_array);
         $this->assertEquals(405, $response->status());
-        $this->assertDatabaseMissing('members' ,
+        $this->assertDatabaseMissing('members',
             [
-            'name' => $request_array['name'],
-            'address' => $request_array['address'],
-            'age' => (int)$request_array['age'] ,
-            'gender' => (int)$request_array['gender']
+                'name' => $request_array['name'],
+                'address' => $request_array['address'],
+                'age' => (int)$request_array['age'],
+                'gender' => (int)$request_array['gender']
             ]);
         $data = json_decode($response->getContent(), true);
-        
     }
 
     /**
@@ -89,26 +86,24 @@ class UpdateValidationTest extends TestCase
             'age' => 24,
             'address' => 'abc',
             'gender' => 1,
-            ]);
+        ]);
         $request_array = [
-        'name' => 'Tạ Quang Hiếu',
-        'address' => 'Test Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia Chi',
-        'age' => 22,
-        'gender' => 1,
+            'name' => 'Tạ Quang Hiếu',
+            'address' => 'Test Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia ChiTest Đia Chi',
+            'age' => 22,
+            'gender' => 1,
 
         ];
         $id_member = $Member->id;
         $response = $this->call('POST', '/edit/' . $id_member, $request_array);
         $this->assertEquals(405, $response->status());
-        $this->assertDatabaseMissing('members' ,
+        $this->assertDatabaseMissing('members',
             [
-            'name' => $request_array['name'],
-            'address' => $request_array['address'],
-            'age' => (int)$request_array['age'],
-            'gender' => (int)$request_array['gender']
+                'name' => $request_array['name'],
+                'address' => $request_array['address'],
+                'age' => (int)$request_array['age'],
+                'gender' => (int)$request_array['gender']
             ]);
-        $data = json_decode($response->getContent(), true);
-        
     }
 
     /**
@@ -123,26 +118,24 @@ class UpdateValidationTest extends TestCase
             'age' => 24,
             'address' => 'abc',
             'gender' => 1,
-            ]);
+        ]);
         $request_array = [
-        'name' => 'Tạ Quang Hiếu',
-        'address' => '', 
-        'age' => 22,
-        'gender' => 1,
+            'name' => 'Tạ Quang Hiếu',
+            'address' => '',
+            'age' => 22,
+            'gender' => 1,
 
         ];
         $id_member = $Member->id;
         $response = $this->call('POST', '/edit/' . $id_member, $request_array);
         $this->assertEquals(405, $response->status());
-        $this->assertDatabaseMissing('members' ,
+        $this->assertDatabaseMissing('members',
             [
-            'name' => $request_array['name'],
-            'address' => $request_array['address'],
-            'age' => (int)$request_array['age'],
-            'gender' => (int)$request_array['gender']
+                'name' => $request_array['name'],
+                'address' => $request_array['address'],
+                'age' => (int)$request_array['age'],
+                'gender' => (int)$request_array['gender']
             ]);
-        $data = json_decode($response->getContent(), true);
-        
     }
 
     /**
@@ -157,26 +150,24 @@ class UpdateValidationTest extends TestCase
             'age' => 24,
             'address' => 'abc',
             'gender' => 1,
-            ]);
+        ]);
         $request_array = [
-        'name' => 'Tạ Quang Hiếu',
-        'address' => 'Vĩnh Phúc',
-        'age' => 222,
-        'gender' => 1,
+            'name' => 'Tạ Quang Hiếu',
+            'address' => 'Vĩnh Phúc',
+            'age' => 222,
+            'gender' => 1,
 
         ];
         $id_member = $Member->id;
         $response = $this->call('POST', '/edit/' . $id_member, $request_array);
         $this->assertEquals(405, $response->status());
-        $this->assertDatabaseMissing('members' ,
+        $this->assertDatabaseMissing('members',
             [
-            'name' => $request_array['name'],
-            'address' => $request_array['address'],
-            'age' => (int)$request_array['age'],
-            'gender' => (int)$request_array['gender']
+                'name' => $request_array['name'],
+                'address' => $request_array['address'],
+                'age' => (int)$request_array['age'],
+                'gender' => (int)$request_array['gender']
             ]);
-        $data = json_decode($response->getContent(), true);
-        
     }
 
     /**
@@ -191,26 +182,24 @@ class UpdateValidationTest extends TestCase
             'age' => 24,
             'address' => 'abc',
             'gender' => 1,
-            ]);
+        ]);
         $request_array = [
-        'name' => 'Tạ Quang Hiếu',
-        'address' => 'Vĩnh Phúc',
-        'age' => '',
-        'gender' => 1,
+            'name' => 'Tạ Quang Hiếu',
+            'address' => 'Vĩnh Phúc',
+            'age' => '',
+            'gender' => 1,
 
         ];
         $id_member = $Member->id;
         $response = $this->call('POST', '/edit/' . $id_member, $request_array);
         $this->assertEquals(405, $response->status());
-        $this->assertDatabaseMissing('members' ,
+        $this->assertDatabaseMissing('members',
             [
-            'name' => $request_array['name'],
-            'address' => $request_array['address'],
-            'age' => (int)$request_array['age'],
-            'gender' => (int)$request_array['gender']
+                'name' => $request_array['name'],
+                'address' => $request_array['address'],
+                'age' => (int)$request_array['age'],
+                'gender' => (int)$request_array['gender']
             ]);
-        $data = json_decode($response->getContent(), true);
-        
     }
 
     /**
@@ -225,26 +214,24 @@ class UpdateValidationTest extends TestCase
             'age' => 24,
             'address' => 'abc',
             'gender' => 1,
-            ]);
+        ]);
         $request_array = [
-        'name' => 'Tạ Quang Hiếu',
-        'address' => 'Vĩnh Phúc',
-        'age' => 'aaaa',
-        'gender' => 1,
+            'name' => 'Tạ Quang Hiếu',
+            'address' => 'Vĩnh Phúc',
+            'age' => 'aaaa',
+            'gender' => 1,
 
         ];
         $id_member = $Member->id;
         $response = $this->call('POST', '/edit/' . $id_member, $request_array);
         $this->assertEquals(405, $response->status());
-        $this->assertDatabaseMissing('members' ,
+        $this->assertDatabaseMissing('members',
             [
-            'name' => $request_array['name'],
-            'address' => $request_array['address'],
-            'age' => (int)$request_array['age'],
-            'gender' => (int)$request_array['gender']
+                'name' => $request_array['name'],
+                'address' => $request_array['address'],
+                'age' => (int)$request_array['age'],
+                'gender' => (int)$request_array['gender']
             ]);
-        $data = json_decode($response->getContent(), true);
-        
     }
 
     /**
@@ -259,25 +246,23 @@ class UpdateValidationTest extends TestCase
             'age' => 24,
             'address' => 'abc',
             'gender' => 1,
-            ]);
+        ]);
         $request_array = [
-        'name' => 'Tạ Quang Hiếu',
-        'address' => 'Vĩnh Phúc',
-        'age' => '22',
-        'gender' => '',
+            'name' => 'Tạ Quang Hiếu',
+            'address' => 'Vĩnh Phúc',
+            'age' => '22',
+            'gender' => '',
 
         ];
         $id_member = $Member->id;
         $response = $this->call('POST', '/edit/' . $id_member, $request_array);
         $this->assertEquals(405, $response->status());
-        $this->assertDatabaseMissing('members' ,
+        $this->assertDatabaseMissing('members',
             [
-            'name' => $request_array['name'],
-            'address' => $request_array['address'],
-            'age' => (int)$request_array['age'],
-            'gender' => (int)$request_array['gender']
+                'name' => $request_array['name'],
+                'address' => $request_array['address'],
+                'age' => (int)$request_array['age'],
+                'gender' => (int)$request_array['gender']
             ]);
-        $data = json_decode($response->getContent(), true);
-        
     }
 }

@@ -15,36 +15,33 @@ class MemberControllerTest extends TestCase
 
     /** test get list member */
 
-    public function testgetList()
+    public function testGetListReturnOK()
     {
-        $Member = factory(Member::class)->create();
+        $member = factory(Member::class)->create();
         $response = $this->get('/list');
         $response->assertStatus(200);
-
     }
 
     /** test get id  */
-    public function testgetEdit()
+    public function testGetEditReturnOK()
     {
-        $Member = factory(Member::class)->create();
+        $member = factory(Member::class)->create();
 
         $response = $this->get(route('get.edit', [$Member->id]));
 
         $response->assertStatus(200);
-
     }
 
     /** test add new Member */
-    public function testgetAdd()
+    public function testAddMemberReturnOkWhenAllValueValidation()
     {
         $reuquest_array = [
-            'name' => 'Tạ Quang Hiếu',
+            'name' => 'Tạ Quang Hiếu 123',
             'age' => 22,
-            'address' => 'Vĩnh Phúc',
+            'address' => 'Vĩnh Phúc 123',
             'gender' => 1,
         ];
         $response = $this->call('POST', '/add', $reuquest_array);
-        $data = json_decode($response->getContent(), true);
         $this->assertEquals(200, $response->status());
         $this->assertDatabaseHas('members',
             [
@@ -56,15 +53,15 @@ class MemberControllerTest extends TestCase
     }
 
 
-    public function testpostEdit()
+    public function testEditMemberReturnOkWhenAllValueValidation()
     {
-        $Member = factory(Member::class)->create([
+        $member = factory(Member::class)->create([
             'name' => 'Babylong',
             'age' => 24,
             'address' => 'abc',
             'gender' => 1,
         ]);
-        $id_member = $Member->id;
+        $id_member = $member->id;
         $reuquest_array = [
             'name' => 'Tạ Quang Hiếu',
             'age' => 23,
@@ -86,14 +83,14 @@ class MemberControllerTest extends TestCase
 
     public function testdeleteMember()
     {
-        $Member = factory(Member::class)->create([
+        $member = factory(Member::class)->create([
             'name' => 'jenifer',
             'age' => 22,
             'address' => 'Vinh Phuc',
             'gender' => 1,
         ]);
-        $id_member = $Member->id;
-        $response = $this->call('delete', '/delete/' . $id_member);
+        $memberId = $member->id;
+        $response = $this->call('delete', '/delete/' . $memberId);
         $this->assertEquals(200, $response->status());
         $this->assertDatabaseMissing('members',
             ['name' => 'jenifer', 'age' => 22, 'address' => 'Vĩnh Phúc', 'gender' => 1]);
