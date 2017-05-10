@@ -20,48 +20,7 @@ class MemberController extends Controller
     public function getAdd(MemberRequest $request)
     {
         
-        $data = new Member();
-        if (isset($request->photo) && $request->photo != 'undefined' && $request->photo) {
-
-             $ext = $request->photo->getMimeType();
-
-              if (in_array($ext,['image/jpeg', 'image/png', 'image/jpg', 'gif'])) {
-                
-                if ($request->photo->getSize() < 10485760) {
-
-                    //get original name of picture.
-                   $thumbnail = time()."-".$request->photo->getClientOriginalName();
-
-                   //move image to appropriate Folder:
-                   $request->photo->move(public_path('images'), $thumbnail);
-
-                   $data->photo = $thumbnail;
-
-                } else {
-                    return response()->json([
-                        'messages' => 'more 10MB'
-                    ]);
-                }
-              } else {
-                return response()->json([
-                    'messages' => 'select image wrong!'
-                ]);
-               
-              }
-        } 
-        if (isset($request->name) && $request->name != 'undefined' && $request->name) {
-            $data->name = $request->name;
-        }
-        if (isset($request->gender) && $request->gender != 'undefined' && $request->gender) {
-            $data->gender = $request->gender;
-        }
-        if (isset($request->age) && $request->age != 'undefined' && $request->age) {
-            $data->age = $request->age;
-        }
-        if (isset($request->address) && $request->address != 'undefined' && $request->address) {
-            $data->address = $request->address;
-        }
-        $data->save();
+        Member::store();
         return response()->json([
             'error' => true,
             'messages' => 'Create successfully'
@@ -94,32 +53,5 @@ class MemberController extends Controller
         return response()->json([
             'messages' => 'Delete successfully'
         ]);
-    }
-
-
-    public function uploadImage(Request $request)
-    {
-        $rules = [
-            'photo' => 'image|mimes:jpeg,png,gif|max:10240',
-
-        ];
-        $messages = [
-            'photo.image' => 'The photo must be an image.',
-            'photo.mimes' => 'The photo must be a file of type: jpeg, png, gif.',
-            'photo.max' => 'The photo may not be greater than 10 MB.',
-        ];
-        $validator = Validator::make($requestAll, $rules, $messages);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'error' => false,
-                'messages' => $validator->errors(),
-            ], 405);
-        }
-        if ($request->hasFile('photo')) {
-            $imageName = rand(1111, 1000) . '.' . $request->photo->getClientOriginalExtension();
-            $request->photo->move(public_path('images'), $imageName);
-            return response()->json(['name' => $imageName]);
-        }
     }
 }
