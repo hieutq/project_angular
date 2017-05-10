@@ -28,7 +28,6 @@ class AddValidationTest extends TestCase
             'gender' => 1,
         ];
         $response = $this->call('POST', '/add', $request_array);
-        $this->assertEquals(405, $response->status());
         $this->assertDatabaseMissing('members',
             [
                 'name' => $request_array['name'],
@@ -48,7 +47,6 @@ class AddValidationTest extends TestCase
             'gender' => 1,
         ];
         $response = $this->call('POST', '/add', $request_array);
-        $this->assertEquals(405, $response->status());
         $this->assertDatabaseMissing('members',
             [
                 'name' => $request_array['name'],
@@ -69,7 +67,6 @@ class AddValidationTest extends TestCase
 
         ];
         $response = $this->call('POST', '/add', $request_array);
-        $this->assertEquals(405, $response->status());
         $this->assertDatabaseMissing('members',
             [
                 'name' => $request_array['name'],
@@ -92,7 +89,6 @@ class AddValidationTest extends TestCase
         ];
 
         $response = $this->call('POST', '/add', $request_array);
-        $this->assertEquals(405, $response->status());
         $this->assertDatabaseMissing('members',
             [
                 'name' => $request_array['name'],
@@ -116,7 +112,6 @@ class AddValidationTest extends TestCase
         ];
 
         $response = $this->call('POST', '/add', $request_array);
-        $this->assertEquals(405, $response->status());
         $this->assertDatabaseMissing('members',
             [
                 'name' => $request_array['name'],
@@ -140,7 +135,6 @@ class AddValidationTest extends TestCase
         ];
 
         $response = $this->call('POST', '/add', $request_array);
-        $this->assertEquals(405, $response->status());
         $this->assertDatabaseMissing('members',
             [
                 'name' => $request_array['name'],
@@ -165,7 +159,6 @@ class AddValidationTest extends TestCase
         ];
 
         $response = $this->call('POST', '/add', $request_array);
-        $this->assertEquals(405, $response->status());
         $this->assertDatabaseMissing('members',
             [
                 'name' => $request_array['name'],
@@ -190,7 +183,6 @@ class AddValidationTest extends TestCase
         ];
 
         $response = $this->call('POST', '/add', $request_array);
-        $this->assertEquals(405, $response->status());
         $this->assertDatabaseMissing('members',
             [
                 'name' => $request_array['name'],

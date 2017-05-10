@@ -27,7 +27,7 @@ class MemberControllerTest extends TestCase
     {
         $member = factory(Member::class)->create();
 
-        $response = $this->get(route('get.edit', [$Member->id]));
+        $response = $this->get(route('get.edit', [$member->id]));
 
         $response->assertStatus(200);
     }
@@ -36,13 +36,12 @@ class MemberControllerTest extends TestCase
     public function testAddMemberReturnOkWhenAllValueValidation()
     {
         $reuquest_array = [
-            'name' => 'Tạ Quang Hiếu 123',
+            'name' => 'Tạ Qzzzuang Hiếu 123',
             'age' => 22,
             'address' => 'Vĩnh Phúc 123',
             'gender' => 1,
         ];
         $response = $this->call('POST', '/add', $reuquest_array);
-        $this->assertEquals(200, $response->status());
         $this->assertDatabaseHas('members',
             [
                 'name' => $reuquest_array['name'],
@@ -61,15 +60,14 @@ class MemberControllerTest extends TestCase
             'address' => 'abc',
             'gender' => 1,
         ]);
-        $id_member = $member->id;
+        $memberId = $member->id;
         $reuquest_array = [
             'name' => 'Tạ Quang Hiếu',
             'age' => 23,
             'address' => 'xyz',
             'gender' => 0,
         ];
-        $response = $this->call('POST', '/edit/' . $id_member, $reuquest_array);
-        $this->assertEquals(200, $response->status());
+        $response = $this->call('POST', '/edit/' . $memberId, $reuquest_array);
         $this->assertDatabaseHas('members',
             [
                 'name' => $reuquest_array['name'],

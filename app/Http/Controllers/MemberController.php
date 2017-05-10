@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Member;
 use App\Http\Requests\MemberRequest;
+use App\Business\MemberObject;
 use Validator;
 use DB;
 
@@ -16,17 +17,51 @@ class MemberController extends Controller
         return response()->json($datas);
     }
 
-    public function getAdd(Request $request)
+    public function getAdd(MemberRequest $request)
     {
-        $data = Member::Validate_rule($request->all(), Member::$rules, Member::$messages);
+        
+        $data = new Member();
+        if (isset($request->photo) && $request->photo != 'undefined' && $request->photo) {
 
-        if ($data['error']) {
-            return response()->json([
-                'error' => false,
-                'messages' => $data['messages']
-            ], 405);
+             $ext = $request->photo->getMimeType();
+
+              if (in_array($ext,['image/jpeg', 'image/png', 'image/jpg', 'gif'])) {
+                
+                if ($request->photo->getSize() < 10485760) {
+
+                    //get original name of picture.
+                   $thumbnail = time()."-".$request->photo->getClientOriginalName();
+
+                   //move image to appropriate Folder:
+                   $request->photo->move(public_path('images'), $thumbnail);
+
+                   $data->photo = $thumbnail;
+
+                } else {
+                    return response()->json([
+                        'messages' => 'more 10MB'
+                    ]);
+                }
+              } else {
+                return response()->json([
+                    'messages' => 'select image wrong!'
+                ]);
+               
+              }
+        } 
+        if (isset($request->name) && $request->name != 'undefined' && $request->name) {
+            $data->name = $request->name;
         }
-        Member::store($request);
+        if (isset($request->gender) && $request->gender != 'undefined' && $request->gender) {
+            $data->gender = $request->gender;
+        }
+        if (isset($request->age) && $request->age != 'undefined' && $request->age) {
+            $data->age = $request->age;
+        }
+        if (isset($request->address) && $request->address != 'undefined' && $request->address) {
+            $data->address = $request->address;
+        }
+        $data->save();
         return response()->json([
             'error' => true,
             'messages' => 'Create successfully'
@@ -39,39 +74,9 @@ class MemberController extends Controller
         return response()->json($data);
     }
 
-    public function postEdit(Request $request, $id)
+    public function postEdit(MemberRequest $request, $id)
     {
         $requestAll = $request->all();
-        $rules = [
-            'name' => 'required|max:100',
-            'gender' => 'required|numeric',
-            'age' => 'required|numeric|digits:2',
-            'address' => 'required|max:300',
-
-        ];
-
-        $messages = [
-            'name.required' => 'Tell us your name.',
-            'name.max' => 'your name wrong. max 100 string',
-            'gender.required' => 'Tell us your gender.',
-            'gender.numeric' => 'Your gender Your age must be a numberic',
-            'age.required' => 'Tell us your age',
-            'age.numberic' => 'Your age Your age must be a numberic',
-            'age.digits' => 'Your age must be a a 2 digit number',
-            'address.max' => 'The address may not be greater than 300 characters.',
-            'address.required' => 'Tell us your address',
-
-        ];
-
-        $validator = Validator::make($requestAll, $rules, $messages);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'error' => false,
-                'messages' => $validator->errors(),
-            ], 405);
-        }
-
         DB::beginTransaction();
         try {
             Member::edit($request, $id);

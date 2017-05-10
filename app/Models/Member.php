@@ -28,7 +28,6 @@ class Member extends Model
         'age.required' => 'Tell us your age',
         'age.numberic' => 'The age must be a number.',
         'age.digits' => 'The age must be 2 digits.',
-        // 'photo.required'        => 'Selected a image',
         'photo.image' => 'The photo must be an image.',
         'photo.mimes' => 'The photo must be a file of type: jpeg, png, gif.',
         'photo.max' => 'The photo may not be greater than 10 MB.',
@@ -80,16 +79,51 @@ class Member extends Model
 
     /**
      * add new a Member.
+     *         if ($request->hasFile('photo')) {
+            $imageName = time() . '.' . $request->photo->getClientOriginalName();
+            $request->photo->move(public_path('images'), $imageName);
+            $data['photo'] = $imageName;
+        }else {
+            $data['photo'] = "";
+        }
      *
      * @var array
      */
     public static function store($request)
     {
         $data = $request->all();
-        if ($request->hasFile('photo')) {
-            $imageName = time() . '.' . $request->photo->getClientOriginalExtension();
-            $request->photo->move(public_path('images'), $imageName);
-            $data['photo'] = $imageName;
+        if (isset($request->photo) && $request->photo != 'undefined' && $request->photo) {
+             $ext = $request->photo->getMimeType();
+              if (in_array($ext,['image/jpeg', 'image/png', 'image/jpg', 'gif'])) {
+                if ($request->photo->getSize() > 10485760) {
+                    //get original name of picture.
+                   $thumbnail = time()."-".$request->photo->getClientOriginalName();
+
+                   //get the extension of picture.
+                   // $arrayImage = explode('.', $thumbnail);
+                   // $extension = end($arrayImage);
+
+                   //get the only name of the picture.
+                   // $cutName = explode(".".$extension, $thumbnail);
+                   // $newName = time()."-".reset($cutName);
+
+                   //create new picture.
+                   // $newThumbnail = $newName.".".$extension;
+
+                   //move image to appropriate Folder:
+                   $request->photo->move(public_path('images'), $thumbnail);
+
+                   $member->photo = $thumbnail;
+                } else {
+                    return response()->json([
+                        'messages' => 'The photo may not be greater than 10 MB.'
+                    ]);
+                }
+              } else {
+                return response()->json([
+                    'messages' => 'The photo must be a file of type: jpeg, png, gif.'
+                ]);
+              }
         }
         $data['name'] = trim($request->name);
         $data['gender'] = trim($request->gender);
@@ -106,34 +140,40 @@ class Member extends Model
      */
     public static function edit($request, $id)
     {
-        $customer = Member::find($id);
-        if ($request->hasFile('photo')) {
-            $rules = [
-                'photo' => 'image|mimes:jpeg,png,gif|max:10240',
+        $member = Member::find($id);
+        if (isset($request->photo) && $request->photo != 'undefined' && $request->photo) {
 
-            ];
-            $messages = [
-                'photo.image' => 'The photo must be an image.',
-                'photo.mimes' => 'The photo must be a file of type: jpeg, png, gif.',
-                'photo.max' => 'The photo may not be greater than 10 MB.',
-            ];
-            $validator = Validator::make($request->all(), $rules, $messages);
-            if ($validator->fails()) {
+             $ext = $request->photo->getMimeType();
+
+              if (in_array($ext,['image/jpeg', 'image/png', 'image/jpg', 'gif'])) {
+                
+                if ($request->photo->getSize() < 10485760) {
+
+                    //get original name of picture.
+                   $thumbnail = time()."-".$request->photo->getClientOriginalName();
+
+                   //move image to appropriate Folder:
+                   $request->photo->move(public_path('images'), $thumbnail);
+
+                   $member->photo = $thumbnail;
+
+                } else {
+                    return response()->json([
+                        'messages' => 'more 10MB'
+                    ]);
+                }
+              } else {
                 return response()->json([
-                    'error' => false,
-                    'messages' => 'thêm ảnh thành công',
-                ], 200);
-            }
-            $imageName = rand(1111, 1000) . '.' . $request->photo->getClientOriginalExtension();
-            $request->photo->move(public_path('images'), $imageName);
-
-            $customer->photo = $imageName;
-        }
-        $customer->name = trim($request->name);
-        $customer->gender = trim($request->gender);
-        $customer->age = trim($request->age);
-        $customer->address = trim($request->address);
-        $customer->save();
-        return $customer;
+                    'messages' => 'select image wrong!'
+                ]);
+               
+              }
+        } 
+        $member->name = trim($request->name);
+        $member->gender = trim($request->gender);
+        $member->age = trim($request->age);
+        $member->address = trim($request->address);
+        $member->save();
+        return $member;
     }
 }

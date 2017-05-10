@@ -18,7 +18,7 @@ class UpdateValidationTest extends TestCase
      */
     public function testEditMemberWhenName101Character()
     {
-        $Member = factory(Member::class)->create([
+        $member = factory(Member::class)->create([
             'name' => 'Babylong',
             'age' => 24,
             'address' => 'abc',
@@ -30,9 +30,8 @@ class UpdateValidationTest extends TestCase
             'age' => 22,
             'gender' => 1,
         ];
-        $id_member = $Member->id;
-        $response = $this->call('POST', '/edit/' . $id_member, $request_array);
-        $this->assertEquals(405, $response->status());
+        $memberId = $member->id;
+        $response = $this->call('POST', '/edit/' . $memberId, $request_array);
         $this->assertDatabaseMissing('members',
             [
                 'name' => $request_array['name'],
@@ -48,7 +47,7 @@ class UpdateValidationTest extends TestCase
      */
     public function testEditWhenNameEmpty()
     {
-        $Member = factory(Member::class)->create([
+        $member = factory(Member::class)->create([
             'name' => 'Babylong',
             'age' => 24,
             'address' => 'abc',
@@ -61,9 +60,8 @@ class UpdateValidationTest extends TestCase
             'gender' => 1,
 
         ];
-        $id_member = $Member->id;
-        $response = $this->call('POST', '/edit/' . $id_member, $request_array);
-        $this->assertEquals(405, $response->status());
+        $memberId = $member->id;
+        $response = $this->call('POST', '/edit/' . $memberId, $request_array);
         $this->assertDatabaseMissing('members',
             [
                 'name' => $request_array['name'],
@@ -81,7 +79,7 @@ class UpdateValidationTest extends TestCase
 
     public function testEditWhenAddress301Character()
     {
-        $Member = factory(Member::class)->create([
+        $member = factory(Member::class)->create([
             'name' => 'Babylong',
             'age' => 24,
             'address' => 'abc',
@@ -94,9 +92,8 @@ class UpdateValidationTest extends TestCase
             'gender' => 1,
 
         ];
-        $id_member = $Member->id;
-        $response = $this->call('POST', '/edit/' . $id_member, $request_array);
-        $this->assertEquals(405, $response->status());
+        $memberID = $member->id;
+        $response = $this->call('POST', '/edit/' . $memberID, $request_array);
         $this->assertDatabaseMissing('members',
             [
                 'name' => $request_array['name'],
@@ -113,7 +110,7 @@ class UpdateValidationTest extends TestCase
 
     public function testEditWhenAddressEmpty()
     {
-        $Member = factory(Member::class)->create([
+        $member = factory(Member::class)->create([
             'name' => 'Babylong',
             'age' => 24,
             'address' => 'abc',
@@ -126,9 +123,8 @@ class UpdateValidationTest extends TestCase
             'gender' => 1,
 
         ];
-        $id_member = $Member->id;
-        $response = $this->call('POST', '/edit/' . $id_member, $request_array);
-        $this->assertEquals(405, $response->status());
+        $memberID = $member->id;
+        $response = $this->call('POST', '/edit/' . $memberID, $request_array);
         $this->assertDatabaseMissing('members',
             [
                 'name' => $request_array['name'],
@@ -145,7 +141,7 @@ class UpdateValidationTest extends TestCase
 
     public function testEditWhenAgeMoreThan2digits()
     {
-        $Member = factory(Member::class)->create([
+        $member = factory(Member::class)->create([
             'name' => 'Babylong',
             'age' => 24,
             'address' => 'abc',
@@ -158,9 +154,8 @@ class UpdateValidationTest extends TestCase
             'gender' => 1,
 
         ];
-        $id_member = $Member->id;
-        $response = $this->call('POST', '/edit/' . $id_member, $request_array);
-        $this->assertEquals(405, $response->status());
+        $memberID = $member->id;
+        $response = $this->call('POST', '/edit/' . $memberID, $request_array);
         $this->assertDatabaseMissing('members',
             [
                 'name' => $request_array['name'],
@@ -177,7 +172,7 @@ class UpdateValidationTest extends TestCase
 
     public function testEditWhenAgeEmpty()
     {
-        $Member = factory(Member::class)->create([
+        $member = factory(Member::class)->create([
             'name' => 'Babylong',
             'age' => 24,
             'address' => 'abc',
@@ -190,9 +185,8 @@ class UpdateValidationTest extends TestCase
             'gender' => 1,
 
         ];
-        $id_member = $Member->id;
-        $response = $this->call('POST', '/edit/' . $id_member, $request_array);
-        $this->assertEquals(405, $response->status());
+        $memberID = $member->id;
+        $response = $this->call('POST', '/edit/' . $memberID, $request_array);
         $this->assertDatabaseMissing('members',
             [
                 'name' => $request_array['name'],
@@ -209,7 +203,7 @@ class UpdateValidationTest extends TestCase
 
     public function testEditWhenAgeMustNotBeNumber()
     {
-        $Member = factory(Member::class)->create([
+        $member = factory(Member::class)->create([
             'name' => 'Babylong',
             'age' => 24,
             'address' => 'abc',
@@ -222,9 +216,8 @@ class UpdateValidationTest extends TestCase
             'gender' => 1,
 
         ];
-        $id_member = $Member->id;
-        $response = $this->call('POST', '/edit/' . $id_member, $request_array);
-        $this->assertEquals(405, $response->status());
+        $memberID = $member->id;
+        $response = $this->call('POST', '/edit/' . $memberID, $request_array);
         $this->assertDatabaseMissing('members',
             [
                 'name' => $request_array['name'],
@@ -241,7 +234,7 @@ class UpdateValidationTest extends TestCase
 
     public function testEditWhenGenderEmpty()
     {
-        $Member = factory(Member::class)->create([
+        $member = factory(Member::class)->create([
             'name' => 'Babylong',
             'age' => 24,
             'address' => 'abc',
@@ -254,9 +247,8 @@ class UpdateValidationTest extends TestCase
             'gender' => '',
 
         ];
-        $id_member = $Member->id;
-        $response = $this->call('POST', '/edit/' . $id_member, $request_array);
-        $this->assertEquals(405, $response->status());
+        $memberID = $member->id;
+        $response = $this->call('POST', '/edit/' . $memberID, $request_array);
         $this->assertDatabaseMissing('members',
             [
                 'name' => $request_array['name'],
@@ -265,4 +257,6 @@ class UpdateValidationTest extends TestCase
                 'gender' => (int)$request_array['gender']
             ]);
     }
+
+
 }

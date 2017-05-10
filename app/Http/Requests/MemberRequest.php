@@ -24,9 +24,10 @@ class MemberRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'      =>'required|max:100',
-            'gender'    =>'required|numeric',
-            'age'       =>'required|numeric|digits:2',
+            'name' => 'required|max:100|not_in:undefined',
+            'gender' => 'required|numeric|not_in:undefined',
+            'age' => 'required|numeric|digits:2',
+            'address' => 'required|max:300|not_in:undefined',
         ];
     }
 
@@ -38,13 +39,15 @@ class MemberRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.required'         =>'Bạn Vui lòng điền tên của bạn',
-            'name.max'              =>'độ dài tên của bạn tối thiểu chỉ 100 ký tự',
-            'gender.required'       =>'Bạn vui lòng chọn giới tính ',
-            'gender.numeric'       =>'Dữ liệu nhập vào không đúng định dạng số',
-            'age.required'          =>'Bạn vui lòng điền tuổi',
-            'age.numeric'           =>'Tuổi không đúng định dạng kiểu số',
-            'age.digits'            =>'Tuổi chỉ được phép điền 2 chữ số',
+            'name.required' => 'Tell us your name.',
+            'name.max' => 'The name may not be greater than 100 characters.',
+            'gender.required' => 'Tell us your gender.',
+            'gender.numeric' => 'The gender must be a number.',
+            'age.required' => 'Tell us your age',
+            'age.numberic' => 'The age must be a number.',
+            'age.digits' => 'The age must be 2 digits.',
+            'address.max' => 'The address may not be greater than 300 characters.',
+            'address.required' => 'Tell us your address'
         ];
     }
 }
