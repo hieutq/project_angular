@@ -2,6 +2,7 @@
 
 @section('head')
     <style type="text/css" media="screen">
+
         .colorMessages {
             color: red;
         }
@@ -29,6 +30,15 @@
         a:hover {
             text-decoration: none;
         }
+
+        .heightImage {
+            margin-bottom: 15px!important; 
+        }
+
+        .heightImage .col-sm-2 {
+            width: 23%;
+        }
+
     </style>
 @endsection
 
@@ -173,23 +183,37 @@
 
                                 </div>
                                 <div class="form-group">
-                                    <label for="psw"> Avatar</label>
-                                    <div class="form-group">
-                                        <input type="file" file-model="Member.files" id="upload"
-                                               onchange="angular.element(this).scope().imageUpload(event)"/>
+                                    <label for="psw"> Avatar </label>
+                                    <div class="col-md-12">
+                                    <div class="row heightImage">
+                                        <div class="col-sm-2">
+                                           <input type="file" ngf-select ng-model="picFile" name="photo"  ngf-max-size="10MB" ngf-model-invalid="errorFile" ngf-pattern="image/png,image/jpg,image/gif,image/jpeg" class="form-control upload" file-model="files" id="upload">
+                                                
+                                        </div>
+                                        <div class="col-sm-8">
+                                           <img ng-show="myForm.files.$valid" ngf-thumbnail="picFile"
+                                              class="img-thumbnail" id="imgThumbnail" width="100em" id="image">
+                                           <button ng-click="picFile = null" ng-show="picFile" class="btn btn-danger btn-sm">
+                                           <span style="font-size: 10px">
+                                           <i class="fa fa-close"></i>
+                                           </span>
+                                           </button>
+                                        </div>
+                                        <span id="helpBlock2" class="help-block colorMessages" ng-show="formAdd.photo.$error.pattern">Image only support: png; jpg; jpeg; gif.</span>
+                                        <span id="helpBlock2" class="help-block colorMessages" ng-show="formAdd.photo.$error.maxSize">File too large: max 10MB</span>
                                     </div>
-                                    <div class="form-group">
-                                        <img class="img-thumbnail" style="width:100px;height:80px;" ng-src="@{{step}}"/>
                                     </div>
-                                    <p class="font-red-mint error">@{{ messagesError }}</p>
+                                        
                                 </div>
-                                <button type="submit" class=" btn btn-default btn-success btn-block"
+                                <div class="form-group">
+                                <div class="row">
+                                    <button type="submit" class=" btn btn-default btn-success btn-block"
                                         ng-click="save(state,id)" ng-disabled="formAdd.$invalid"><span
                                             class="glyphicon glyphicon-off"></span> Thêm
-                                </button>
-                                <button type="submit" class="btn btn-default btn-success btn-block"
-                                        ng-click="resetForm()"><span class="glyphicon glyphicon-repeat"></span> reset
-                                </button>
+                                    </button>
+                                </div>
+                                </div>
+                                
                             </form>
                         </div>
                     </div>
@@ -260,12 +284,23 @@
 
                                 <div class="form-group">
                                     <label for="psw"> Avatar</label>
-                                    <input type="file" class="form-control" name="photo" file-model="MemberEdit.files"
-                                           onchange="angular.element(this).scope().uploadImage(files)"/>
-                                    <span class="error hieuit">@{{messagesErrorimage}}</span>
-                                    <div class="form-group">
-                                        <img class="img-thumbnail" style="width:100px;height:80px;"
-                                             ng-src="{{url('images')}}/@{{image}}"/>
+                                    <div class="col-md-12">
+                                    <div class="row heightImage">
+                                        <div class="col-sm-2">
+                                           <input type="file" ngf-select ng-model="picFile" name="photo"  ngf-max-size="10MB" ngf-model-invalid="errorFile" ngf-pattern="image/png,image/jpg,image/gif,image/jpeg" class="form-control upload" file-model="files" id="upload">
+                                                <span id="helpBlock2" class="help-block colorMessages" ng-show="formEdit.photo.$error.pattern">Image only support: png; jpg; jpeg; gif.</span>
+                                                <span id="helpBlock2" class="help-block colorMessages" ng-show="formEdit.photo.$error.maxSize">File too large: max 10MB</span>
+                                        </div>
+                                        <div class="col-sm-8">
+                                           <img ng-show="myForm.files.$valid" ngf-thumbnail="picFile"
+                                              class="img-thumbnail" id="imageID" width="100em" id="image">
+                                           <button ng-click="picFile = null" ng-show="picFile" class="btn btn-danger btn-sm">
+                                           <span style="font-size: 10px">
+                                           <i class="fa fa-close"></i>
+                                           </span>
+                                           </button>
+                                        </div>
+                                    </div>
                                     </div>
                                 </div>
                                 <button type="submit" class=" btn btn-default btn-success btn-block submit"
@@ -285,6 +320,9 @@
     <script src="{{url('js/app/lib/angular.min.js')}}" type="text/javascript"></script>
     <script src="{{url('js/jqueryValidate/jquery.validate.min.js')}}" type="text/javascript"></script>
     <script src="{{url('js/jqueryValidate/additional-methods.min.js')}}" type="text/javascript"></script>
+    <script src="{{url('js/file-upload/ng-file-upload.min.js')}}" type="text/javascript"></script>
+    <script src="{{url('js/file-upload/ng-file-upload-shim.min.js')}}" type="text/javascript"></script>
+    <script src="{{url('js/file-upload/ng-file-upload-all.min.js')}}" type="text/javascript"></script>
     <script src="{{url('js/app/app.js')}}" type="text/javascript"></script>
     <script src="{{url('js/app/directive.js')}}" type="text/javascript"></script>
     <script src="{{url('js/app/controller/MemberController.js')}}" type="text/javascript"></script>

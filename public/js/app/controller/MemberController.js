@@ -21,6 +21,7 @@ app.controller('MemberController', function ($scope, $http, API) {
     $scope.sortReverse = false;  // set the default sort order
     $scope.NumAge = /^[0-9]{2}$/;
     $scope.NameCharacter = /[^0-9|'| _]+\w/;
+    $scope.Member = {};
     $http({
         method: 'GET',
         url: 'list',
@@ -32,14 +33,16 @@ app.controller('MemberController', function ($scope, $http, API) {
         $scope.state = state
         switch (state) {
             case "add" :
+                document.getElementById("imgThumbnail").src = "";
                 $scope.Member = {};
-                document.getElementById("upload").value = ""
-                $('.error').removeClass('active')
+                $scope.files = "";
+                $('.error').removeClass('active');
                 $('.error').addClass('disactive');
                 $('#myModalAdd').modal('show');
                 $scope.frmTitle = " Thêm Thành Viên";
                 break;
             case "edit" :
+                document.getElementById("imageID").src = "";
                 $('.error').removeClass('active')
                 $('.error').addClass('disactive');
                 $('#myModalEdit').modal('show');
@@ -61,7 +64,8 @@ app.controller('MemberController', function ($scope, $http, API) {
 
     $scope.save = function (state, id) {
         if (state == 'add') {
-            $http({
+            if ($scope.formAdd.$invalid == false) {
+                $http({
                 method: 'POST',
                 url: 'add',
                 headers: {'Content-Type': undefined},
@@ -70,7 +74,7 @@ app.controller('MemberController', function ($scope, $http, API) {
                     gender: $scope.Member.gender,
                     address: $scope.Member.address,
                     age: $scope.Member.age,
-                    photo: $scope.Member.files
+                    photo: $scope.files
                 },
                 transformRequest: function (data, headersGetter) {
                     var fd = new FormData();
@@ -81,77 +85,70 @@ app.controller('MemberController', function ($scope, $http, API) {
                     delete headers['Content-Type'];
                     return fd;
                 }
-            }).then(function (response) {
-
-                if (response.data.error == false) {
-                    console.log(response);
-                    $('.error').removeClass('disactive');
-                    $('.error').show().addClass('active');
-                    $scope.messagesError = response.data.messages.photo[0];
-                    $scope.messagesName = response.data.messages.name[0];
-                    $scope.messagesGender = response.data.messages.gender[0];
-                    $scope.messagesAge = response.data.messages.age[0];
-
-                }
-                else {
+            }).then(function (response) {               
                     $http({
                         method: 'GET',
                         url: 'list',
                     }).then(function (response) {
+                        console.log(response);
                         $scope.members = response.data;
                     });
                     $('#formMemberAdd').trigger("reset");
                     $('#myModalAdd').modal('hide');
 
                     toastr["success"]("Thêm thành viên thành công!");
-
-                }
-            });
-        } else if (state == 'edit') {
-            $http({
-                method: 'POST',
-                url: 'edit/' + id,
-                headers: {'Content-Type': undefined},
-                data: {
-                    name: $scope.MemberEdit.name,
-                    gender: $scope.MemberEdit.gender,
-                    address: $scope.MemberEdit.address,
-                    age: $scope.MemberEdit.age,
-                    photo: $scope.MemberEdit.files
-                },
-                transformRequest: function (data, headersGetter) {
-                    var fd = new FormData();
-                    angular.forEach(data, function (value, key) {
-                        fd.append(key, value);
-                    });
-                    var headers = headersGetter();
-                    delete headers['Content-Type'];
-                    return fd;
-                }
-            }).then(function (response) {
-                if (response.data.error == false) {
+                  }, function (response) {
                     console.log(response);
-                    $('.error').removeClass('disactive');
-                    $('.error').show().addClass('active');
-                    $scope.messagesErrorimage = response.data.messages.photo[0];
-                    $scope.messagesName = response.data.messages.name[0];
-                    $scope.messagesGender = response.data.messages.gender[0];
-                    $scope.messagesAge = response.data.messages.age[0];
-                }
-                else {
-                    $http({
-                        method: 'GET',
-                        url: 'list',
-                    }).then(function (response) {
-                        $scope.members = response.data;
-                    });
-                    $('#myModalEdit').modal('hide');
-                    toastr["success"]("Sửa thành viên thành công!");
+                  });
+            }    
+            
+        } else if (state == 'edit') {
+            if ($scope.formEdit.$invalid == false) {
+                $http({
+                    method: 'POST',
+                    url: 'edit/' + id,
+                    headers: {'Content-Type': undefined},
+                    data: {
+                        name: $scope.MemberEdit.name,
+                        gender: $scope.MemberEdit.gender,
+                        address: $scope.MemberEdit.address,
+                        age: $scope.MemberEdit.age,
+                        photo: $scope.files
+                    },
+                    transformRequest: function (data, headersGetter) {
+                        var fd = new FormData();
+                        angular.forEach(data, function (value, key) {
+                            fd.append(key, value);
+                        });
+                        var headers = headersGetter();
+                        delete headers['Content-Type'];
+                        return fd;
+                    }
+                }).then(function (response) {
+                    if (response.data.error == false) {
+                        console.log(response);
+                        $('.error').removeClass('disactive');
+                        $('.error').show().addClass('active');
+                        $scope.messagesErrorimage = response.data.messages.photo[0];
+                        $scope.messagesName = response.data.messages.name[0];
+                        $scope.messagesGender = response.data.messages.gender[0];
+                        $scope.messagesAge = response.data.messages.age[0];
+                    }
+                    else {
+                        $http({
+                            method: 'GET',
+                            url: 'list',
+                        }).then(function (response) {
+                            $scope.members = response.data;
+                        });
+                        $('#myModalEdit').modal('hide');
+                        toastr["success"]("Sửa thành viên thành công!");
 
-                }
-            }, function (response) {
-                toastr["error"]("Đã xảy ra lỗi vui lòng kiểm tra lại !");
-            });
+                    }
+                }, function (response) {
+                    toastr["error"]("Đã xảy ra lỗi vui lòng kiểm tra lại !");
+                });
+            }
         }
     }
 
